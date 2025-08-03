@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Arvostele lukemasi kirja</title>
+    </head>
+
+    <body>
+        <h1>Uusi arvostelu</h1>
+        <form action="/create_review" method="post">
+            <p>
+                Teoksen nimi: <br />
+                <input type="text" name="title" />
+            </p>
+            <p>
+                Kirjailija: <br />
+                <input type="text" name="author" />
+            </p>
+            <p>
+                Arvostelu: <br />
+                <textarea name="review" rows="22" cols="90"></textarea>
+            </p>
+            <p>
+                Numeroarvosana 0-10: <br />
+                <input name="grade" size="1" />
+            </p>
+            <input type="submit" value="Julkaise" />
+        </form>
+    </body>
+</html>

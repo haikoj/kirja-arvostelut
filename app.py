@@ -34,6 +34,20 @@ def create():
 
     return "Tunnus luotu"
 
+@app.route("/create_review", methods=["POST"])
+def create_review():
+    title = request.form["title"]
+    review = request.form["review"]
+    author = request.form["author"]
+    grade = request.form["grade"]
+    user_id = session["user_id"]
+
+    sql = """INSERT INTO items (title, author, review, grade, user_id)
+           VALUES (?, ?, ?, ?, ?)"""
+    db.execute(sql, [title, author, review, grade, user_id])
+
+    return redirect("/")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -44,10 +58,13 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        sql = "SELECT password_hash FROM users WHERE username = ?"
-        password_hash = db.query(sql, [username])[0][0]
+        sql = "SELECT id, password_hash FROM users WHERE username = ?"
+        result = db.query(sql, [username])[0]
+        user_id = result["id"]
+        password_hash = result["password_hash"]
 
     if check_password_hash(password_hash, password):
+        session["user_id"] = user_id
         session["username"] = username
         return redirect("/")
     else:
@@ -56,4 +73,9 @@ def login():
 @app.route("/logout")
 def logout():
     del session["username"]
+    del session["user_id"]
     return redirect("/")
+
+@app.route("/new_review")
+def review():
+    return render_template("review.html")
