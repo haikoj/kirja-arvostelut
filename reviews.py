@@ -30,3 +30,19 @@ def update_review(review_id, title, author, review, grade):
 def delete_review(review_id):
     sql = """DELETE FROM items WHERE id = ?"""
     db.execute(sql, [review_id])
+
+def find_review(query):
+    sql_base = "SELECT id, title FROM items WHERE"
+    words = query.strip().split()
+    possible = []
+    separate_words = []
+
+    for word in words:
+        like = f"%{word}%"
+        possible.append("title LIKE ?")
+        possible.append("author LIKE ?")
+        separate_words.extend([like, like])
+
+    sql = f"{sql_base} {' OR '.join(possible)} ORDER BY id DESC"
+    return db.query(sql, separate_words)
+
