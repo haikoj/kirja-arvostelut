@@ -2,26 +2,26 @@
 
 <html>
     <head>
-        <title>Arvostele lukemasi kirja</title>
+        <title>Review a book</title>
     </head>
 
     <body>
-        <h1>Uusi arvostelu</h1>
+        <h1>Add review</h1>
         <form action="/create_review" method="post">
             <p>
-                Teoksen nimi: <br />
+                Book title: <br />
                 <input type="text" name="title" />
             </p>
             <p>
-                Kirjailija: <br />
+                Author of the book: <br />
                 <input type="text" name="author" />
             </p>
             <p>
-                Arvostelu: <br />
+                Review: <br />
                 <textarea name="review" rows="22" cols="90"></textarea>
             </p>
             <p>
-                Numeroarvosana 0-10: <br />
+                Grade 0-10: <br />
                 <input name="grade" size="1" />
             </p>
             <input type="submit" value="Julkaise" />

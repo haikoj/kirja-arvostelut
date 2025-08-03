@@ -2,24 +2,33 @@
 <html>
 
 <head>
-  <title>Kirjautuminen</title>
+  <title>book review app</title>
 </head>
 
 <body>
-    <h1>Kirja-arvostelusovellus</h1>
+    <h1>book review app</h1>
   {% if session.username %}
   <p>
-    Olet kirjautunut nimellä {{ session.username }}, id-numerosi on {{ session.user_id }}
+    You are logged in as {{ session.username }} <br /> Your ID number is {{ session.user_id }}
   </p>
-  <a href="/logout">Kirjaudu ulos</a>
+  <a href="/logout">Sign out</a>
   {% else %}
-  <a href="/login">Kirjaudu sisään</a>
-  <a href="/register">Luo tunnus</a>
+  <a href="/login">Sign in</a>
+  <a href="/register">Register</a>
   {% endif %}
 
   <p>
-    <a href="/new_review">Arvostele</a>
+    <a href="/new_review">Add review</a>
   </p>
+
+  <h2>Reviews:</h2>
+
+  <ul>
+  {% for review in reviews %}
+    <li><a href="/review/{{ review.id }}">{{ review.title }}</a></li>
+  {% endfor %}
+  </ul>
+
 
 </body>
 
