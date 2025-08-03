@@ -53,6 +53,35 @@ def create_review():
 
     return redirect("/")
 
+@app.route("/edit_review/<int:review_id>")
+def edit_review(review_id):
+    review = reviews.get_review(review_id)
+    return render_template("edit_review.html", review=review)
+
+
+@app.route("/update_review", methods=["POST"])
+def update_review():
+    review_id = int(request.form["review_id"])
+    title = request.form["title"]
+    author = request.form["author"]
+    review_text = request.form["review"]
+    grade = request.form["grade"]
+    user_id = session["user_id"]
+
+    reviews.update_review(review_id, title, author, review_text, grade)
+
+    return redirect("/review/" + str(review_id))
+
+@app.route("/delete_review/<int:review_id>", methods = ["GET", "POST"])
+def delete_review(review_id):
+    if request.method == "GET":
+        review = reviews.get_review(review_id)
+        return render_template("delete_review.html", review=review)
+    elif request.method == "POST":
+        if "delete" in request.form:
+            reviews.delete_review(review_id)
+            return redirect("/")
+        else: return redirect("/review/" + str(review_id))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

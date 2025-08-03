@@ -11,9 +11,22 @@ def get_reviews():
     return db.query(sql)
 
 def get_review(review_id):
-    sql = """SELECT items.title, items.author, items.review, items.grade, users.username
+    sql = """SELECT items.id, items.title, items.author, items.review, items.grade, users.username, users.id user_id
             FROM items, users
             WHERE items.user_id = users.id AND 
             items.id = ?"""
     
     return db.query(sql, [review_id])[0]
+
+
+def update_review(review_id, title, author, review, grade):
+    sql = """UPDATE items SET title = ?, author = ?, review = ?, grade = ?
+            WHERE id = ?"""
+
+
+    db.execute(sql, [title, author, review, grade, review_id])
+
+
+def delete_review(review_id):
+    sql = """DELETE FROM items WHERE id = ?"""
+    db.execute(sql, [review_id])

@@ -7,8 +7,13 @@
 
     <body>
         <h1>{{ review.title }} by {{ review.author }}</h1>
+        {% if session.user_id == review.user_id %}
+
         <p>
-            Grade: {{ review.grade }} <br /><br /> {{ review.review }} <br /><br /><br /> Review by <br /> {{ review.username }}
+            <a href="/edit_review/{{review.id}}">Edit</a>
+            <a href="/delete_review/{{review.id}}">Delete</a>
+            <br />Grade: {{ review.grade }} <br /><br /> {{ review.review }} <br /><br /><br /> Review by <br /> {{ review.username }}
         </p>
+        {% endif %}
     </body>
 </html>

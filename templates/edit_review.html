@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Edit the review</title>
+    </head>
+    <body>
+        <h1>Edit the review</h1>
+        <form action="/update_review" method="post">
+            <input type="hidden" name="review_id" value="{{ review.id }}" />
+            
+            <p>
+                Book title: <br />
+                <input type="text" name="title" value="{{ review.title }}" />
+            </p>
+            <p>
+                Author of the book: <br />
+                <input type="text" name="author" value="{{ review.author }}"/>
+            </p>
+            <p>
+                Review: <br />
+                <textarea name="review" rows="22" cols="90">{{ review.review }}</textarea>
+            </p>
+            <p>
+                Grade 0-10: <br />
+                <input name="grade" size="1" value="{{ review.grade }}"/>
+            </p>
+            <input type="hidden" name="review_id" value="{{ review.id }}">
+            <input type="submit" value="Confirm" />
+        </form>
+    </body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Delete the review</title>
+    </head>
+    <body>
+        <h1>Delete the review</h1>
+        <p>Are you sure you wish to delete your review permanently?</p>
+        <form action="/delete_review/{{ review.id }}" method="post">
+            <input type="submit" name="delete" value="delete">
+            <input type="submit" name="go back" value="return">
+        </form>
+    </body>
+</html>
