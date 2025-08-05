@@ -57,6 +57,7 @@ def create():
 
 @app.route("/create_review", methods=["POST"])
 def create_review():
+    require_login()
     title = request.form["title"]
     review = request.form["review"]
     author = request.form["author"]
@@ -69,6 +70,7 @@ def create_review():
 
 @app.route("/edit_review/<int:review_id>")
 def edit_review(review_id):
+    require_login()
     review = reviews.get_review(review_id)
     if not review:
         abort(404)
@@ -101,6 +103,7 @@ def update_review():
 
 @app.route("/delete_review/<int:review_id>", methods = ["GET", "POST"])
 def delete_review(review_id):
+    require_login()
     review = reviews.get_review(review_id)
     if not review:
         abort(404)
@@ -141,10 +144,18 @@ def login():
 
 @app.route("/logout")
 def logout():
+    require_login()
     del session["username"]
     del session["user_id"]
     return redirect("/")
 
 @app.route("/new_review")
 def review():
+    require_login()
     return render_template("review.html")
+
+
+
+def require_login():
+    if "user_id" not in session:
+        abort(403)
