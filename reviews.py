@@ -16,7 +16,10 @@ def get_review(review_id):
             WHERE items.user_id = users.id AND 
             items.id = ?"""
     
-    return db.query(sql, [review_id])[0]
+    result = db.query(sql, [review_id])
+    if result:
+        return result[0]
+    else: return None
 
 
 def update_review(review_id, title, author, review, grade):
