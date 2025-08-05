@@ -1,10 +1,11 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, abort
 from werkzeug.security import check_password_hash, generate_password_hash
 import db
 import config
 import reviews
+
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -66,26 +67,36 @@ def create_review():
 @app.route("/edit_review/<int:review_id>")
 def edit_review(review_id):
     review = reviews.get_review(review_id)
+    if review["user_id"] != session["user_id"]:
+        abort(403)
+
     return render_template("edit_review.html", review=review)
 
 
 @app.route("/update_review", methods=["POST"])
 def update_review():
     review_id = int(request.form["review_id"])
+    review = reviews.get_review(review_id)
+
+    if review["user_id"] != session["user_id"]:
+        abort(403)
+
     title = request.form["title"]
     author = request.form["author"]
     review_text = request.form["review"]
     grade = request.form["grade"]
-    user_id = session["user_id"]
 
     reviews.update_review(review_id, title, author, review_text, grade)
 
     return redirect("/review/" + str(review_id))
 
+
 @app.route("/delete_review/<int:review_id>", methods = ["GET", "POST"])
 def delete_review(review_id):
+    review = reviews.get_review(review_id)
+    if review["user_id"] != session["user_id"]:
+        abort(403)
     if request.method == "GET":
-        review = reviews.get_review(review_id)
         return render_template("delete_review.html", review=review)
     elif request.method == "POST":
         if "delete" in request.form:
