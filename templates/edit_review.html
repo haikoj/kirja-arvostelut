@@ -10,19 +10,19 @@
             
             <p>
                 Book title: <br />
-                <input type="text" name="title" value="{{ review.title }}" />
+                <input type="text" name="title" maxlength="100" size="86" value="{{ review.title }}" />
             </p>
             <p>
                 Author of the book: <br />
-                <input type="text" name="author" value="{{ review.author }}"/>
+                <input type="text" name="author" maxlength="50" size="86" value="{{ review.author }}"/>
             </p>
             <p>
                 Review: <br />
-                <textarea name="review" rows="22" cols="90">{{ review.review }}</textarea>
+                <textarea name="review" rows="22" cols="97">{{ review.review }}</textarea>
             </p>
             <p>
                 Grade 0-10: <br />
-                <input name="grade" size="1" value="{{ review.grade }}"/>
+                <input type="number" name="grade" min="0" max="10" value="{{ review.grade }}"/>
             </p>
             <input type="hidden" name="review_id" value="{{ review.id }}">
             <input type="submit" value="Confirm" />
