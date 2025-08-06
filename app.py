@@ -64,9 +64,25 @@ def create_review():
     grade = request.form["grade"]
     user_id = session["user_id"]
 
-    reviews.add_review(title, author, review, grade, user_id)
+    try:
+        grade = int(grade)
+    except:
+        return "The grade must be an integer between 0 and 10"
 
-    return redirect("/")
+
+    if author and review and title and (grade or grade == 0):
+        if len(title) > 100:
+            return f"Book title is {len(title)-100} characters too long."
+        if len(author) > 50:
+            return f"Author name is {len(author)-50} characters too long."
+        if 10 >= int(grade) >= 0:
+            reviews.add_review(title, author, review, grade, user_id)
+            return redirect("/")
+        else:
+            return "The grade must be between 0 and 10"
+    else:
+        return "All fields must be filled"
+
 
 @app.route("/edit_review/<int:review_id>")
 def edit_review(review_id):
@@ -96,9 +112,24 @@ def update_review():
     review_text = request.form["review"]
     grade = request.form["grade"]
 
-    reviews.update_review(review_id, title, author, review_text, grade)
+    try:
+        grade = int(grade)
+    except:
+        return "The grade must be an integer between 0 and 10"
 
-    return redirect("/review/" + str(review_id))
+
+    if author and review and title and (grade or grade == 0):
+        if len(title) > 100:
+            return f"Book title is {len(title)-100} characters too long."
+        if len(author) > 50:
+            return f"Author name is {len(author)-50} characters too long."
+        if 10 >= int(grade) >= 0:
+            reviews.update_review(review_id, title, author, review_text, grade)
+            return redirect("/review/" + str(review_id))
+        else:
+            return "The grade must be between 0 and 10"
+    else:
+        return "All fields must be filled"
 
 
 @app.route("/delete_review/<int:review_id>", methods = ["GET", "POST"])

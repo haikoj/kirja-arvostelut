@@ -10,19 +10,19 @@
         <form action="/create_review" method="post">
             <p>
                 Book title: <br />
-                <input type="text" name="title" />
+                <input type="text" name="title" maxlength="100" size="86"/>
             </p>
             <p>
                 Author of the book: <br />
-                <input type="text" name="author" />
+                <input type="text" name="author" maxlength="50" size="86" />
             </p>
             <p>
                 Review: <br />
-                <textarea name="review" rows="22" cols="90"></textarea>
+                <textarea name="review" rows="22" cols="97" ></textarea>
             </p>
             <p>
                 Grade 0-10: <br />
-                <input name="grade" size="1" />
+                <input type="number" name="grade" min="0" max="10" required />
             </p>
             <input type="submit" value="Publish" />
         </form>
