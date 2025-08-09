@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>User {{ user.username }}</title>
+</head>
+
+<body>
+    <h1>User {{ user.username }}</h1>
+    <p>
+        {% if reviews|count == 0 %}
+            {{ user.username }} has no book reviews yet.
+        {% elif reviews|count == 1 %}
+            {{ user.username }} has reviewed 1 book.
+        {% else %}
+            {{ user.username }} has reviewed {{ reviews|count }} books.
+        {% endif %}
+    </p>
+    <h2>Reviews:</h2>
+    <ul>
+        {% for review in reviews %}
+        <li><a href="/review/{{ review.id }}">{{ review.title }} by {{ review.author }}</a></li>
+        {% endfor %}
+    </ul>
+    <p>
+        <a href="/">previous</a>
+    </p>
+</body>
+</html>

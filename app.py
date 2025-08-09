@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import db
 import config
 import reviews
+import users
 
 
 app = Flask(__name__)
@@ -45,6 +46,8 @@ def create():
     password2 = request.form["password2"]
     if password1 != password2:
         return "Passwords do not match."
+    if len(password1) < 4:
+        return "Password must be at least 4 digits"
     password_hash = generate_password_hash(password1)
 
     try:
@@ -55,6 +58,18 @@ def create():
 
     return "Your account has been created!"
 
+
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
+    
+    reviews = users.get_user_reviews(user_id)
+
+    return render_template("show_user.html", user=user, reviews=reviews)
+
+    
 @app.route("/create_review", methods=["POST"])
 def create_review():
     require_login()

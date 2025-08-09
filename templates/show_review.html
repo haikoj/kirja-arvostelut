@@ -13,8 +13,12 @@
             <a href="/edit_review/{{review.id}}">Edit</a>
             <a href="/delete_review/{{review.id}}">Delete</a>
         {% endif %}
-            <br />Grade: {{ review.grade }} <br /><br /> {{ review.review }} <br /><br /><br /> Review by <br /> {{ review.username }}
+            <br />Grade: {{ review.grade }} <br /><br /> {{ review.review }} <br /><br /><br />
         </p>
+        <p>
+            Review by <br /> <a href="/user/{{ review.user_id }}"> {{ review.username }}</a>
+        </p>
+
             <a href="/">previous</a>
     </body>
 </html>

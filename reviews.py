@@ -21,7 +21,6 @@ def get_review(review_id):
         return result[0]
     else: return None
 
-
 def update_review(review_id, title, author, review, grade):
     sql = """UPDATE items SET title = ?, author = ?, review = ?, grade = ?
             WHERE id = ?"""
