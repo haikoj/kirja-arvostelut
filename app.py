@@ -51,10 +51,9 @@ def create():
     password_hash = generate_password_hash(password1)
 
     try:
-        sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-        db.execute(sql, [username, password_hash])
+        users.create_user(username, password1)
     except sqlite3.IntegrityError:
-        return "Username is already taken"
+        return "Username is already taken!"
 
     return "Your account has been created!"
 
@@ -169,24 +168,17 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
 
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+    username = request.form["username"]
+    password = request.form["password"]
+    if not username or not password:
+        return "Please fill in both username and password"
 
-        if not username or not password:
-            return "Please fill in both username and password"
-
-        sql = "SELECT id, password_hash FROM users WHERE username = ?"
-        result = db.query(sql, [username])[0]
-        user_id = result["id"]
-        password_hash = result["password_hash"]
-
-    if check_password_hash(password_hash, password):
+    user_id = users.check_login(username, password)
+    if user_id:
         session["user_id"] = user_id
         session["username"] = username
         return redirect("/")
-    else:
-        return "Invalid username or password"
+    return "Invalid username or password"
 
 @app.route("/logout")
 def logout():
