@@ -1,7 +1,6 @@
 import sqlite3
 from flask import Flask
 from flask import redirect, render_template, request, session, abort
-from werkzeug.security import check_password_hash, generate_password_hash
 import db
 import config
 import reviews
@@ -31,8 +30,9 @@ def show_review(review_id):
     review = reviews.get_review(review_id)
     if not review:
         abort(404)
+    classes = reviews.get_classes(review_id)
 
-    return render_template("show_review.html", review=review)
+    return render_template("show_review.html", review=review, classes=classes)
 
 
 @app.route("/register")
@@ -48,7 +48,6 @@ def create():
         return "Passwords do not match."
     if len(password1) < 4:
         return "Password must be at least 4 digits"
-    password_hash = generate_password_hash(password1)
 
     try:
         users.create_user(username, password1)
@@ -90,7 +89,14 @@ def create_review():
         if len(author) > 50:
             return f"Author name is {len(author)-50} characters too long."
         if 10 >= int(grade) >= 0:
-            reviews.add_review(title, author, review, grade, user_id)
+            classes = []
+            category = request.form["category"]
+            genre = request.form["genre"]
+            if genre:
+                classes.append(("Genre", genre))
+            if category:
+                classes.append(("Category", category))
+            reviews.add_review(title, author, review, grade, user_id, classes)
             return redirect("/")
         else:
             return "The grade must be between 0 and 10"

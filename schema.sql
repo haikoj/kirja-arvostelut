@@ -12,3 +12,10 @@ CREATE TABLE items (
     grade INTEGER,
     user_id INTEGER REFERENCES users
 );
+
+CREATE TABLE review_classes (
+    id INTEGER PRIMARY KEY,
+    review_id TEXT REFERENCES items,
+    title TEXT,
+    value TEXT
+)

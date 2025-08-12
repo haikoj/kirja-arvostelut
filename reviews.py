@@ -1,14 +1,24 @@
 import db
 
-def add_review(title, author, review, grade, user_id):
+def add_review(title, author, review, grade, user_id, classes):
     sql = """INSERT INTO items (title, author, review, grade, user_id)
         VALUES (?, ?, ?, ?, ?)"""
     db.execute(sql, [title, author, review, grade, user_id])
+
+    review_id = db.last_insert_id()
+
+    sql = """INSERT INTO review_classes (review_id, title, value) VALUES (?, ?, ?)"""
+    for title, value in classes:
+        db.execute(sql, [review_id, title, value])
 
 def get_reviews():
     sql = "SELECT id, title FROM items ORDER BY id DESC"
     
     return db.query(sql)
+
+def get_classes(review_id):
+    sql = """SELECT title, value FROM review_classes WHERE review_id = ?"""
+    return db.query(sql, [review_id])
 
 def get_review(review_id):
     sql = """SELECT items.id, items.title, items.author, items.review, items.grade, users.username, users.id user_id
