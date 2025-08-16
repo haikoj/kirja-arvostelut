@@ -2,14 +2,16 @@ import db
 
 def add_review(title, author, review, grade, user_id, classes):
     sql = """INSERT INTO items (title, author, review, grade, user_id)
-        VALUES (?, ?, ?, ?, ?)"""
+             VALUES (?, ?, ?, ?, ?)"""
     db.execute(sql, [title, author, review, grade, user_id])
 
     review_id = db.last_insert_id()
 
-    sql = """INSERT INTO review_classes (review_id, title, value) VALUES (?, ?, ?)"""
-    for title, value in classes:
-        db.execute(sql, [review_id, title, value])
+    sql = """INSERT INTO review_classes (review_id, title, value)
+             VALUES (?, ?, ?)"""
+    for title2, value2 in classes:
+        db.execute(sql, [review_id, title2, value2])
+
 
 def get_reviews():
     sql = "SELECT id, title FROM items ORDER BY id DESC"
@@ -19,6 +21,18 @@ def get_reviews():
 def get_classes(review_id):
     sql = """SELECT title, value FROM review_classes WHERE review_id = ?"""
     return db.query(sql, [review_id])
+
+def get_all_classes():
+    sql = """SELECT title, value FROM classes ORDER BY id"""
+    result = db.query(sql)
+
+    classes = {}
+    for title, value in result:
+        classes[title] = []
+    for title, value in result:
+        classes[title].append(value)
+
+    return classes
 
 def get_review(review_id):
     sql = """SELECT items.id, items.title, items.author, items.review, items.grade, users.username, users.id user_id
@@ -57,4 +71,3 @@ def find_review(query):
 
     sql = f"{sql_base} {' OR '.join(possible)} ORDER BY id DESC"
     return db.query(sql, separate_words)
-

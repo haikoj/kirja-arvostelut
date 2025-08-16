@@ -1,0 +1,48 @@
+DELETE FROM classes;
+
+
+INSERT INTO classes (title, value) VALUES ('category', 'Fiction');
+INSERT INTO classes (title, value) VALUES ('category', 'Nonfiction');
+
+INSERT INTO classes (title, value) VALUES ('genre', 'Adventure');
+INSERT INTO classes (title, value) VALUES ('genre', 'Anthology');
+INSERT INTO classes (title, value) VALUES ('genre', 'Art');
+INSERT INTO classes (title, value) VALUES ('genre', 'Autobiography');
+INSERT INTO classes (title, value) VALUES ('genre', 'Biography');
+INSERT INTO classes (title, value) VALUES ('genre', 'Business');
+INSERT INTO classes (title, value) VALUES ('genre', 'Childrens');
+INSERT INTO classes (title, value) VALUES ('genre', 'Classic');
+INSERT INTO classes (title, value) VALUES ('genre', 'Comic');
+INSERT INTO classes (title, value) VALUES ('genre', 'Contemporary Fiction');
+INSERT INTO classes (title, value) VALUES ('genre', 'Cookbook');
+INSERT INTO classes (title, value) VALUES ('genre', 'Crime');
+INSERT INTO classes (title, value) VALUES ('genre', 'Diary');
+INSERT INTO classes (title, value) VALUES ('genre', 'Drama');
+INSERT INTO classes (title, value) VALUES ('genre', 'Dystopian');
+INSERT INTO classes (title, value) VALUES ('genre', 'Essay');
+INSERT INTO classes (title, value) VALUES ('genre', 'Fantasy');
+INSERT INTO classes (title, value) VALUES ('genre', 'Graphic Novel');
+INSERT INTO classes (title, value) VALUES ('genre', 'Health');
+INSERT INTO classes (title, value) VALUES ('genre', 'Historical Fiction');
+INSERT INTO classes (title, value) VALUES ('genre', 'History');
+INSERT INTO classes (title, value) VALUES ('genre', 'Horror');
+INSERT INTO classes (title, value) VALUES ('genre', 'Humor / Satire');
+INSERT INTO classes (title, value) VALUES ('genre', 'Literary Fiction');
+INSERT INTO classes (title, value) VALUES ('genre', 'Magical Realism');
+INSERT INTO classes (title, value) VALUES ('genre', 'Memoir');
+INSERT INTO classes (title, value) VALUES ('genre', 'Mystery');
+INSERT INTO classes (title, value) VALUES ('genre', 'Paranormal');
+INSERT INTO classes (title, value) VALUES ('genre', 'Poetry');
+INSERT INTO classes (title, value) VALUES ('genre', 'Political');
+INSERT INTO classes (title, value) VALUES ('genre', 'Religion');
+INSERT INTO classes (title, value) VALUES ('genre', 'Romance');
+INSERT INTO classes (title, value) VALUES ('genre', 'Science');
+INSERT INTO classes (title, value) VALUES ('genre', 'Science Fiction');
+INSERT INTO classes (title, value) VALUES ('genre', 'Self-help');
+INSERT INTO classes (title, value) VALUES ('genre', 'Short Story');
+INSERT INTO classes (title, value) VALUES ('genre', 'Suspense');
+INSERT INTO classes (title, value) VALUES ('genre', 'Thriller');
+INSERT INTO classes (title, value) VALUES ('genre', 'Travel');
+INSERT INTO classes (title, value) VALUES ('genre', 'True Crime');
+INSERT INTO classes (title, value) VALUES ('genre', 'Western');
+INSERT INTO classes (title, value) VALUES ('genre', 'Young Adult');

@@ -62,46 +62,44 @@ def show_user(user_id):
     user = users.get_user(user_id)
     if not user:
         abort(404)
-    
+
     reviews = users.get_user_reviews(user_id)
 
     return render_template("show_user.html", user=user, reviews=reviews)
 
-    
+
 @app.route("/create_review", methods=["POST"])
 def create_review():
     require_login()
-    title = request.form["title"]
-    review = request.form["review"]
-    author = request.form["author"]
-    grade = request.form["grade"]
-    user_id = session["user_id"]
+
+    title = request.form.get("title", "").strip()
+    author = request.form.get("author", "").strip()
+    review_text = request.form.get("review", "").strip()
+    grade = request.form.get("grade", "").strip()
+
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry and entry != "(select)" and ":" in entry:
+            part1, part2 = entry.split(":", 1)
+            classes.append((part1, part2))
+
+    if not (title and author and review_text and grade):
+        return "All fields must be filled"
 
     try:
         grade = int(grade)
-    except:
+    except ValueError:
         return "The grade must be an integer between 0 and 10"
 
+    if len(title) > 100:
+        return f"Book title is {len(title)-100} characters too long."
+    if len(author) > 50:
+        return f"Author name is {len(author)-50} characters too long."
+    if not (0 <= grade <= 10):
+        return "The grade must be between 0 and 10"
 
-    if author and review and title and (grade or grade == 0):
-        if len(title) > 100:
-            return f"Book title is {len(title)-100} characters too long."
-        if len(author) > 50:
-            return f"Author name is {len(author)-50} characters too long."
-        if 10 >= int(grade) >= 0:
-            classes = []
-            category = request.form["category"]
-            genre = request.form["genre"]
-            if genre:
-                classes.append(("Genre", genre))
-            if category:
-                classes.append(("Category", category))
-            reviews.add_review(title, author, review, grade, user_id, classes)
-            return redirect("/")
-        else:
-            return "The grade must be between 0 and 10"
-    else:
-        return "All fields must be filled"
+    reviews.add_review(title, author, review_text, grade, session["user_id"], classes)
+    return redirect("/")
 
 
 @app.route("/edit_review/<int:review_id>")
@@ -138,7 +136,7 @@ def update_review():
         return "The grade must be an integer between 0 and 10"
 
 
-    if author and review and title and (grade or grade == 0):
+    if author and review_text and title and (grade or grade == 0):
         if len(title) > 100:
             return f"Book title is {len(title)-100} characters too long."
         if len(author) > 50:
@@ -196,9 +194,8 @@ def logout():
 @app.route("/new_review")
 def review():
     require_login()
-    return render_template("review.html")
-
-
+    classes = reviews.get_all_classes()
+    return render_template("review.html", classes=classes)
 
 def require_login():
     if "user_id" not in session:

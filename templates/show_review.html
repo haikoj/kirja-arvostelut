@@ -21,11 +21,11 @@
         <p>Classes:
             <ul>
                 {% for class in classes %}
-                <li>{{ class.title }}: {{ class.value }}</li>
+                <li>{{ class.title|capitalize }}: {{ class.value }}</li>
                 {% endfor %}
             </ul>
         </p>
 
-            <a href="/">previous</a>
+            <a href="/">Front page</a>
     </body>
 </html>
