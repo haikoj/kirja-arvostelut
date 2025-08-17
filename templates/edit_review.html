@@ -29,7 +29,6 @@
                 </select>
             </p>
             {% endfor %}
-
             <p>
                 Book title: <br />
                 <input type="text" name="title" maxlength="100" size="86" value="{{ review.title }}" />
@@ -47,6 +46,7 @@
                 <input type="number" name="grade" min="0" max="10" value="{{ review.grade }}"/>
             </p>
             <input type="hidden" name="review_id" value="{{ review.id }}">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
             <input type="submit" value="Confirm" />
         </form>
     </body>

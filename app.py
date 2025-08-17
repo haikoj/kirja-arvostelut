@@ -5,6 +5,7 @@ import db
 import config
 import reviews
 import users
+import secrets
 
 
 app = Flask(__name__)
@@ -13,6 +14,8 @@ app.secret_key = config.secret_key
 @app.route("/")
 def index():
     all_reviews = reviews.get_reviews()
+    if "username" in session and "csrf_token" not in session:
+        session["csrf_token"] = secrets.token_hex(16)
     return render_template("index.html", reviews = all_reviews)
 
 @app.route("/find_review")
@@ -41,6 +44,7 @@ def register():
 
 @app.route("/create", methods=["POST"])
 def create():
+    check_csrf()
     username = request.form["username"]
     password1 = request.form["password1"]
     password2 = request.form["password2"]
@@ -71,7 +75,7 @@ def show_user(user_id):
 @app.route("/create_review", methods=["POST"])
 def create_review():
     require_login()
-
+    check_csrf()
     title = request.form["title"]
     author = request.form["author"]
     review_text = request.form["review"]
@@ -129,6 +133,7 @@ def edit_review(review_id):
 
 @app.route("/update_review", methods=["POST"])
 def update_review():
+    check_csrf()
     review_id = int(request.form["review_id"])
     review = reviews.get_review(review_id)
     if not review:
@@ -181,6 +186,7 @@ def delete_review(review_id):
     if request.method == "GET":
         return render_template("delete_review.html", review=review)
     elif request.method == "POST":
+        check_csrf()
         if "delete" in request.form:
             reviews.delete_review(review_id)
             return redirect("/")
@@ -189,8 +195,10 @@ def delete_review(review_id):
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
+        if "csrf_token" not in session:
+            session["csrf_token"] = secrets.token_hex(16)
         return render_template("login.html")
-
+    check_csrf()
     username = request.form["username"]
     password = request.form["password"]
     if not username or not password:
@@ -200,12 +208,15 @@ def login():
     if user_id:
         session["user_id"] = user_id
         session["username"] = username
+        session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
     return "Invalid username or password"
 
-@app.route("/logout")
+
+@app.route("/logout", methods=["POST"])
 def logout():
     require_login()
+    check_csrf()
     del session["username"]
     del session["user_id"]
     return redirect("/")
@@ -215,6 +226,12 @@ def review():
     require_login()
     classes = reviews.get_all_classes()
     return render_template("review.html", classes=classes)
+
+def check_csrf():
+    token = request.form.get("csrf_token")
+    session_token = session.get("csrf_token")
+    if not token or not session_token or token != session_token:
+        abort(403)
 
 def require_login():
     if "user_id" not in session:

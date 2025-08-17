@@ -41,6 +41,7 @@
                 Grade 0-10: <br />
                 <input type="number" name="grade" min="0" max="10" required />
             </p>
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
             <input type="submit" value="Publish" />
         </form>
     </body>

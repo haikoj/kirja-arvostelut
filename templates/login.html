@@ -1,31 +1,33 @@
 <!DOCTYPE html>
+
+
 <html>
+  <head>
+    <title>login</title>
+  </head>
 
-<head>
-  <title>login</title>
-</head>
+  <body>
+  {% if session.username %}
+    <p>You are logged in as {{ session.username }}</p>
 
-<body>
-{% if session.username %}
-  <p>
-    You are logged in as {{ session.username }}
-  </p>
-  <p>
-    <a href="/logout">Sign out</a>
-  </p>
+    <form action="/logout" method="post" style="display:inline">
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+      <input type="submit" value="Sign out" />
+    </form>
+
   {% else %}
-  <form action="/login" method="post">
-    <p>
-      Username: <br />
-      <input type="text" name="username" />
-    </p>
-    <p>
-      Password: <br />
-      <input type="password" name="password" />
-    </p>
-    <input type="submit" value="Sign in" />
-  </form>
+    <form action="/login" method="post">
+      <p>
+        Username: <br />
+        <input type="text" name="username" />
+      </p>
+      <p>
+        Password: <br />
+        <input type="password" name="password" />
+      </p>
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+      <input type="submit" value="Sign in" />
+    </form>
   {% endif %}
-</body>
-
+  </body>
 </html>
