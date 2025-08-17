@@ -46,6 +46,7 @@ def get_review(review_id):
         return result[0]
     else: return None
 
+
 def update_review(review_id, title, author, review, grade, classes):
     sql = """DELETE FROM review_classes
             WHERE review_id = ?"""
@@ -64,6 +65,7 @@ def update_review(review_id, title, author, review, grade, classes):
 def delete_review(review_id):
     sql = """DELETE FROM items WHERE id = ?"""
     db.execute(sql, [review_id])
+
 
 def find_review(query):
     sql_base = "SELECT id, title FROM items WHERE"

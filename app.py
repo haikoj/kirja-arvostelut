@@ -77,11 +77,15 @@ def create_review():
     review_text = request.form["review"]
     grade = request.form["grade"]
 
+    all_classes = reviews.get_all_classes()
+
     classes = []
     for entry in request.form.getlist("classes"):
         if entry and entry != "(select)" and ":" in entry:
-            part1, part2 = entry.split(":")
-            classes.append((part1, part2))
+            entry_title, entry_value = entry.split(":")
+            if entry_title not in all_classes or entry_value not in all_classes[entry_title]:
+                abort(403)
+            classes.append((entry_title, entry_value))
 
     if not (title and author and review_text and grade):
         return "All fields must be filled"
@@ -152,11 +156,15 @@ def update_review():
     else:
         return "All fields must be filled"
 
+    all_classes = reviews.get_all_classes()
+
     classes = []
     for entry in request.form.getlist("classes"):
         if entry and entry != "(select)" and ":" in entry:
-            part1, part2 = entry.split(":")
-            classes.append((part1, part2))
+            entry_title, entry_value = entry.split(":")
+            if entry_title not in all_classes or entry_value not in all_classes[entry_title]:
+                abort(403)
+            classes.append((entry_title, entry_value))
 
     reviews.update_review(review_id, title, author, review_text, grade, classes)
     return redirect("/review/" + str(review_id))
