@@ -27,9 +27,10 @@ def get_all_classes():
     result = db.query(sql)
 
     classes = {}
+
     for title, value in result:
-        classes[title] = []
-    for title, value in result:
+        if title not in classes:
+            classes[title] = []
         classes[title].append(value)
 
     return classes
@@ -45,11 +46,18 @@ def get_review(review_id):
         return result[0]
     else: return None
 
-def update_review(review_id, title, author, review, grade):
+def update_review(review_id, title, author, review, grade, classes):
+    sql = """DELETE FROM review_classes
+            WHERE review_id = ?"""
+    db.execute(sql, [review_id])
+
+    sql = """INSERT INTO review_classes (review_id, title, value)
+             VALUES (?, ?, ?)"""
+    for title, value in classes:
+        db.execute(sql, [review_id, title, value])
+
     sql = """UPDATE items SET title = ?, author = ?, review = ?, grade = ?
             WHERE id = ?"""
-
-
     db.execute(sql, [title, author, review, grade, review_id])
 
 

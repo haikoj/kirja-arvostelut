@@ -72,15 +72,15 @@ def show_user(user_id):
 def create_review():
     require_login()
 
-    title = request.form.get("title", "").strip()
-    author = request.form.get("author", "").strip()
-    review_text = request.form.get("review", "").strip()
-    grade = request.form.get("grade", "").strip()
+    title = request.form["title"]
+    author = request.form["author"]
+    review_text = request.form["review"]
+    grade = request.form["grade"]
 
     classes = []
     for entry in request.form.getlist("classes"):
         if entry and entry != "(select)" and ":" in entry:
-            part1, part2 = entry.split(":", 1)
+            part1, part2 = entry.split(":")
             classes.append((part1, part2))
 
     if not (title and author and review_text and grade):
@@ -112,7 +112,15 @@ def edit_review(review_id):
     if review["user_id"] != session["user_id"]:
         abort(403)
 
-    return render_template("edit_review.html", review=review)
+    all_classes = reviews.get_all_classes()
+    classes = {}
+    for my_class in all_classes:
+        classes[my_class] = ""
+    for entry in reviews.get_classes(review_id):
+        classes[entry["title"]] = entry["value"]
+
+    reviews.get_classes(review_id)
+    return render_template("edit_review.html", review=review, all_classes=all_classes, classes=classes)
 
 
 @app.route("/update_review", methods=["POST"])
@@ -121,7 +129,6 @@ def update_review():
     review = reviews.get_review(review_id)
     if not review:
         abort(404)
-
     if review["user_id"] != session["user_id"]:
         abort(403)
 
@@ -135,20 +142,24 @@ def update_review():
     except:
         return "The grade must be an integer between 0 and 10"
 
-
     if author and review_text and title and (grade or grade == 0):
         if len(title) > 100:
             return f"Book title is {len(title)-100} characters too long."
         if len(author) > 50:
             return f"Author name is {len(author)-50} characters too long."
-        if 10 >= int(grade) >= 0:
-            reviews.update_review(review_id, title, author, review_text, grade)
-            return redirect("/review/" + str(review_id))
-        else:
+        if not 10 >= int(grade) >= 0:
             return "The grade must be between 0 and 10"
     else:
         return "All fields must be filled"
 
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry and entry != "(select)" and ":" in entry:
+            part1, part2 = entry.split(":")
+            classes.append((part1, part2))
+
+    reviews.update_review(review_id, title, author, review_text, grade, classes)
+    return redirect("/review/" + str(review_id))
 
 @app.route("/delete_review/<int:review_id>", methods = ["GET", "POST"])
 def delete_review(review_id):

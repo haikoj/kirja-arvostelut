@@ -10,6 +10,26 @@
 
             <a href="/">Front page</a>
             
+            {% for class in all_classes %}
+            <p>
+                {{ class|capitalize }}: <br />
+                <select name="classes">
+                <option value="(select)">(select)</option>
+                {% for option in all_classes[class] %}
+                    {% if classes[class] == option %}
+                    <option value="{{ class }}:{{ option }}" selected>
+                        {{ option }}
+                    </option>
+                    {% else %}
+                    <option value="{{ class }}:{{ option }}">
+                        {{ option }}
+                    </option>
+                    {% endif %}
+                {% endfor %}
+                </select>
+            </p>
+            {% endfor %}
+
             <p>
                 Book title: <br />
                 <input type="text" name="title" maxlength="100" size="86" value="{{ review.title }}" />
