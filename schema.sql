@@ -4,7 +4,7 @@ CREATE TABLE users (
     password_hash TEXT
 );
 
-CREATE TABLE items (
+CREATE TABLE reviews (
     id INTEGER PRIMARY KEY,
     title TEXT,
     author TEXT,
@@ -15,7 +15,7 @@ CREATE TABLE items (
 
 CREATE TABLE comments (
     id INTEGER PRIMARY KEY,
-    review_id INTEGER REFERENCES items,
+    review_id INTEGER REFERENCES reviews,
     user_id INTEGER REFERENCES users,
     comment TEXT NOT NULL,
     comment_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -29,7 +29,7 @@ CREATE TABLE classes (
 
 CREATE TABLE review_classes (
     id INTEGER PRIMARY KEY,
-    review_id TEXT REFERENCES items,
+    review_id TEXT REFERENCES reviews,
     title TEXT,
     value TEXT
 )

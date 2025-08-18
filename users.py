@@ -14,7 +14,7 @@ def get_user(user_id):
 
 def get_user_reviews(user_id):
     sql = """SELECT id, title, author 
-            FROM items
+            FROM reviews
             WHERE user_id = ?
             ORDER BY id DESC"""
 

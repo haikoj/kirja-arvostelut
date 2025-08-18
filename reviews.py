@@ -1,7 +1,7 @@
 import db
 
 def add_review(title, author, review, grade, user_id, classes):
-    sql = """INSERT INTO items (title, author, review, grade, user_id)
+    sql = """INSERT INTO reviews (title, author, review, grade, user_id)
              VALUES (?, ?, ?, ?, ?)"""
     db.execute(sql, [title, author, review, grade, user_id])
 
@@ -13,12 +13,12 @@ def add_review(title, author, review, grade, user_id, classes):
         db.execute(sql, [review_id, title2, value2])
 
 def add_comment(review_id, user_id, comment):
-    sql = """INSERT INTO comments (review_id, user_id, comment) 
+    sql = """INSERT INTO comments (review_id, user_id, comment)
             VALUES (?, ?, ?)"""
     db.execute(sql, [review_id, user_id, comment])
 
 def get_reviews():
-    sql = "SELECT id, title FROM items ORDER BY id DESC"
+    sql = "SELECT id, title FROM reviews ORDER BY id DESC"
     
     return db.query(sql)
 
@@ -48,10 +48,10 @@ def get_all_classes():
     return classes
 
 def get_review(review_id):
-    sql = """SELECT items.id, items.title, items.author, items.review, items.grade, users.username, users.id user_id
-            FROM items, users
-            WHERE items.user_id = users.id AND 
-            items.id = ?"""
+    sql = """SELECT reviews.id, reviews.title, reviews.author, reviews.review, reviews.grade, users.username, users.id user_id
+            FROM reviews, users
+            WHERE reviews.user_id = users.id AND 
+            reviews.id = ?"""
     
     result = db.query(sql, [review_id])
     if result:
@@ -69,7 +69,7 @@ def update_review(review_id, title, author, review, grade, classes):
     for title, value in classes:
         db.execute(sql, [review_id, title, value])
 
-    sql = """UPDATE items SET title = ?, author = ?, review = ?, grade = ?
+    sql = """UPDATE reviews SET title = ?, author = ?, review = ?, grade = ?
             WHERE id = ?"""
     db.execute(sql, [title, author, review, grade, review_id])
 
@@ -78,12 +78,12 @@ def delete_review(review_id):
     sql = """DELETE FROM review_classes WHERE review_id = ?"""
     db.execute(sql, [review_id])
 
-    sql = """DELETE FROM items WHERE id = ?"""
+    sql = """DELETE FROM reviews WHERE id = ?"""
     db.execute(sql, [review_id])
 
 
 def find_review(query):
-    sql_base = "SELECT id, title FROM items WHERE"
+    sql_base = "SELECT id, title FROM reviews WHERE"
     words = query.strip().split()
     possible = []
     separate_words = []
