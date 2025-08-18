@@ -11,6 +11,7 @@ import secrets
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
+
 @app.route("/")
 def index():
     all_reviews = reviews.get_reviews()
@@ -34,9 +35,9 @@ def show_review(review_id):
     if not review:
         abort(404)
     classes = reviews.get_classes(review_id)
+    comments = reviews.get_comments(review_id)
 
-    return render_template("show_review.html", review=review, classes=classes)
-
+    return render_template("show_review.html", review=review, classes=classes, comments=comments)
 
 @app.route("/register")
 def register():
@@ -109,6 +110,21 @@ def create_review():
     reviews.add_review(title, author, review_text, grade, session["user_id"], classes)
     return redirect("/")
 
+@app.route("/create_comment", methods=["POST"])
+def create_comment():
+    require_login()
+    check_csrf()
+
+    comment = request.form.get("comment")
+    review_id = request.form.get("review_id")
+    if not review_id or not comment:
+        return "Post content required"
+
+    if not reviews.get_review(review_id):
+        abort(404)
+
+    reviews.add_comment(review_id, session["user_id"], comment)
+    return redirect(f"/review/{review_id}")
 
 @app.route("/edit_review/<int:review_id>")
 def edit_review(review_id):
@@ -223,6 +239,12 @@ def logout():
 
 @app.route("/new_review")
 def review():
+    require_login()
+    classes = reviews.get_all_classes()
+    return render_template("review.html", classes=classes)
+
+@app.route("/new_comment")
+def comment():
     require_login()
     classes = reviews.get_all_classes()
     return render_template("review.html", classes=classes)

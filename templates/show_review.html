@@ -9,6 +9,8 @@
         <h1>{{ review.title }} by {{ review.author }}</h1>
         {% if session.user_id == review.user_id %}
 
+        <a href="/">Front page</a>
+
         <p>
             <a href="/edit_review/{{review.id}}">Edit</a>
             <a href="/delete_review/{{review.id}}">Delete</a>
@@ -26,6 +28,22 @@
             </ul>
         </p>
 
-            <a href="/">Front page</a>
+        <h2>Comments:</h2>
+
+        <ul>
+            {% for comment in comments %}
+              <li>{{ comment.username }}: {{ comment.comment }} {{ comment.comment_time }}</li>
+            {% endfor %}
+        </ul>
+
+        <form action="/create_comment" method="post">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <input type="hidden" name="review_id" value="{{ review.id }}">
+            <textarea name="comment" rows="6" cols="40"></textarea>
+            <br>
+            <input type="submit" value="Post">
+        </form>
+
+
     </body>
 </html>

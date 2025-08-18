@@ -13,6 +13,14 @@ CREATE TABLE items (
     user_id INTEGER REFERENCES users
 );
 
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY,
+    review_id INTEGER REFERENCES items,
+    user_id INTEGER REFERENCES users,
+    comment TEXT NOT NULL,
+    comment_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+
 CREATE TABLE classes (
     id INTEGER PRIMARY KEY,
     title TEXT,

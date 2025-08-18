@@ -12,11 +12,23 @@ def add_review(title, author, review, grade, user_id, classes):
     for title2, value2 in classes:
         db.execute(sql, [review_id, title2, value2])
 
+def add_comment(review_id, user_id, comment):
+    sql = """INSERT INTO comments (review_id, user_id, comment) 
+            VALUES (?, ?, ?)"""
+    db.execute(sql, [review_id, user_id, comment])
 
 def get_reviews():
     sql = "SELECT id, title FROM items ORDER BY id DESC"
     
     return db.query(sql)
+
+def get_comments(review_id):
+    sql = """SELECT comments.comment, comments.comment_time, users.id, users.username
+            FROM comments, users
+            WHERE comments.review_id = ? AND comments.user_id = users.id
+            ORDER BY comments.id DESC"""
+
+    return db.query(sql, [review_id])
 
 def get_classes(review_id):
     sql = """SELECT title, value FROM review_classes WHERE review_id = ?"""
