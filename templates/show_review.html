@@ -12,38 +12,49 @@
 
         {% if session.user_id == review.user_id %}
         <p>
-            <a href="/edit_review/{{review.id}}">Edit</a>
-            <a href="/delete_review/{{review.id}}">Delete</a>
+            <a href="/edit_review/{{ review.id }}">Edit</a>
+            <a href="/delete_review/{{ review.id }}">Delete</a>
+        </p>
         {% endif %}
-            <br />Grade: {{ review.grade }} <br /><br /> {{ review.review }} <br /><br /><br />
-        </p>
+
         <p>
-            Review by <br /> <a href="/user/{{ review.user_id }}"> {{ review.username }}</a>
+        Grade: {{ review.grade }}
+        <br><br>
+        {{ review.review | replace('\n','<br>') | safe }}
         </p>
-        <p>Classes:
-            <ul>
-                {% for class in classes %}
-                <li>{{ class.title|capitalize }}: {{ class.value }}</li>
-                {% endfor %}
-            </ul>
+
+        <p>
+        Review by<br>
+        <a href="/user/{{ review.user_id }}">{{ review.username }}</a>
+        </p>
+
+        <p>
+        Classes:
+        <ul>
+            {% for class in classes %}
+            <li>{{ class.title|capitalize }}: {{ class.value }}</li>
+            {% endfor %}
+        </ul>
         </p>
 
         <h2>Comments:</h2>
-
         <ul>
-            {% for comment in comments %}
-              <li>{{ comment.username }}: {{ comment.comment }} {{ comment.comment_time }}</li>
-            {% endfor %}
+        {% for comment in comments %}
+            <li>
+            <strong>{{ comment.username }}</strong>:<br>
+            {{ comment.comment | replace('\n','<br>') |safe }}
+            <br>
+            <small>{{ comment.comment_time }}</small>
+            </li>
+        {% endfor %}
         </ul>
 
         <form action="/create_comment" method="post">
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-            <input type="hidden" name="review_id" value="{{ review.id }}">
-            <textarea name="comment" rows="6" cols="40"></textarea>
-            <br>
-            <input type="submit" value="Post">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+        <input type="hidden" name="review_id" value="{{ review.id }}">
+        <textarea name="comment" rows="6" cols="40"></textarea>
+        <br>
+        <input type="submit" value="Post">
         </form>
-
-
     </body>
 </html>
