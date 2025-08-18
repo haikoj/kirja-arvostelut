@@ -26,7 +26,7 @@ def get_comments(review_id):
     sql = """SELECT comments.comment, comments.comment_time, users.id, users.username
             FROM comments, users
             WHERE comments.review_id = ? AND comments.user_id = users.id
-            ORDER BY comments.id DESC"""
+            ORDER BY comments.id"""
 
     return db.query(sql, [review_id])
 
@@ -75,6 +75,9 @@ def update_review(review_id, title, author, review, grade, classes):
 
 
 def delete_review(review_id):
+    sql = """DELETE FROM comments WHERE review_id = ?"""
+    db.execute(sql, [review_id])
+
     sql = """DELETE FROM review_classes WHERE review_id = ?"""
     db.execute(sql, [review_id])
 
