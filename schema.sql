@@ -2,7 +2,7 @@ CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
     password_hash TEXT
-);
+)
 
 CREATE TABLE reviews (
     id INTEGER PRIMARY KEY,
@@ -10,8 +10,9 @@ CREATE TABLE reviews (
     author TEXT,
     review TEXT,
     grade INTEGER,
-    user_id INTEGER REFERENCES users
-);
+    user_id INTEGER REFERENCES users,
+    review_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
 
 CREATE TABLE comments (
     id INTEGER PRIMARY KEY,
