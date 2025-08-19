@@ -26,16 +26,19 @@
         <p>
         Review by<br>
         <a href="/user/{{ review.user_id }}">{{ review.username }}</a>
+        <br>
         </p>
 
         <p>
+            <small>{{ review.review_time }}</small>
+        </p>
+
         Classes:
         <ul>
             {% for class in classes %}
             <li>{{ class.title|capitalize }}: {{ class.value }}</li>
             {% endfor %}
         </ul>
-        </p>
 
         <h2>Comments:</h2>
         <ul>

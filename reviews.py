@@ -48,7 +48,8 @@ def get_all_classes():
     return classes
 
 def get_review(review_id):
-    sql = """SELECT reviews.id, reviews.title, reviews.author, reviews.review, reviews.grade, users.username, users.id user_id
+    sql = """SELECT reviews.id, reviews.title, reviews.author, reviews.review, reviews.grade, reviews.review_time,
+            users.username, users.id user_id
             FROM reviews, users
             WHERE reviews.user_id = users.id AND 
             reviews.id = ?"""
@@ -59,7 +60,7 @@ def get_review(review_id):
     else: return None
 
 
-def update_review(review_id, title, author, review, grade, classes):
+def update_review(review_id, book_title, author, review, grade, classes):
     sql = """DELETE FROM review_classes
             WHERE review_id = ?"""
     db.execute(sql, [review_id])
@@ -71,7 +72,7 @@ def update_review(review_id, title, author, review, grade, classes):
 
     sql = """UPDATE reviews SET title = ?, author = ?, review = ?, grade = ?
             WHERE id = ?"""
-    db.execute(sql, [title, author, review, grade, review_id])
+    db.execute(sql, [book_title, author, review, grade, review_id])
 
 
 def delete_review(review_id):
