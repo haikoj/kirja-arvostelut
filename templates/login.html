@@ -8,7 +8,11 @@
 
   <body>
   {% if session.username %}
-    <p>You are logged in as {{ session.username }}</p>
+    <p>You are already logged in as {{ session.username }}.</p>
+
+    <a href="/">Front page</a>
+
+    <br /><br />
 
     <form action="/logout" method="post" style="display:inline">
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />

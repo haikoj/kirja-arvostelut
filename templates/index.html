@@ -8,7 +8,7 @@
     <h1>Book review app</h1>
 
     {% if session.username %}
-      <p>You are logged in as {{ session.username }}</p>
+      <p>Hello {{ session.username }}!</p>
       <form action="/logout" method="post" style="display:inline">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         <input type="submit" value="Sign out">

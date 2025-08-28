@@ -41,6 +41,9 @@ def show_review(review_id):
 
 @app.route("/register")
 def register():
+    if "username" in session:
+        return redirect("/")
+
     if "csrf_token" not in session:
         session["csrf_token"] = secrets.token_hex(16)
     return render_template("register.html")
@@ -58,11 +61,14 @@ def create():
 
     try:
         users.create_user(username, password1)
+        user_id = users.check_login(username, password1)
+        session["user_id"] = user_id
+        session["username"] = username
+        session["csrf_token"] = secrets.token_hex(16)
     except sqlite3.IntegrityError:
         return "Username is already taken!"
 
-    return "Your account has been created!"
-
+    return redirect("/")
 
 @app.route("/user/<int:user_id>")
 def show_user(user_id):
@@ -100,14 +106,14 @@ def create_review():
     try:
         grade = int(grade)
     except ValueError:
-        return "The grade must be an integer between 0 and 10"
+        return "The grade must be an integer between 0 and 10."
 
     if len(title) > 100:
         return f"Book title is {len(title)-100} characters too long."
     if len(author) > 50:
         return f"Author name is {len(author)-50} characters too long."
     if not (0 <= grade <= 10):
-        return "The grade must be between 0 and 10"
+        return "The grade must be between 0 and 10."
 
     reviews.add_review(title, author, review_text, grade, session["user_id"], classes)
     return redirect("/")
