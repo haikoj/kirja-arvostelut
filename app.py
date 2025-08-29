@@ -78,7 +78,11 @@ def show_user(user_id):
 
     reviews = users.get_user_reviews(user_id)
 
-    return render_template("show_user.html", user=user, reviews=reviews)
+    own_page = False
+    if session.get("user_id") == user_id:
+        own_page = True
+
+    return render_template("show_user.html", user=user, reviews=reviews, own_page=own_page)
 
 
 @app.route("/create_review", methods=["POST"])
