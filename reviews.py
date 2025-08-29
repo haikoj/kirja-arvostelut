@@ -18,7 +18,10 @@ def add_comment(review_id, user_id, comment):
     db.execute(sql, [review_id, user_id, comment])
 
 def get_reviews():
-    sql = "SELECT id, title FROM reviews ORDER BY id DESC"
+    sql = """SELECT r.id, r.title, r.author, u.username
+            FROM reviews r
+            JOIN users u ON r.user_id = u.id
+            ORDER BY r.id DESC"""
     
     return db.query(sql)
 

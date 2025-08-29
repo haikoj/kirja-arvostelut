@@ -4,10 +4,11 @@
 
 {% block content %}
 
-    <h2>Reviews:</h2>
+    <h2>Latest reviews:</h2>
     <ul>
       {% for review in reviews %}
-        <li><a href="/review/{{ review.id }}">{{ review.title }}</a></li>
+        <li><a href="/review/{{ review.id }}">{{ review.title }} by {{ review.author }} –
+        <strong>{{ review.username }}</strong></a></li>
       {% endfor %}
     </ul>
 {% endblock %}
