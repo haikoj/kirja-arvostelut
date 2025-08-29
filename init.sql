@@ -10,7 +10,7 @@ INSERT INTO classes (title, value) VALUES ('genre', 'Art');
 INSERT INTO classes (title, value) VALUES ('genre', 'Autobiography');
 INSERT INTO classes (title, value) VALUES ('genre', 'Biography');
 INSERT INTO classes (title, value) VALUES ('genre', 'Business');
-INSERT INTO classes (title, value) VALUES ('genre', 'Childrens');
+INSERT INTO classes (title, value) VALUES ('genre', 'Children''s');
 INSERT INTO classes (title, value) VALUES ('genre', 'Classic');
 INSERT INTO classes (title, value) VALUES ('genre', 'Comic');
 INSERT INTO classes (title, value) VALUES ('genre', 'Contemporary Fiction');
