@@ -1,6 +1,7 @@
 import sqlite3
 from flask import Flask
 from flask import redirect, render_template, request, session, abort
+from datetime import datetime, timedelta
 import db
 import config
 import reviews
@@ -260,6 +261,12 @@ def comment():
     require_login()
     classes = reviews.get_all_classes()
     return render_template("review.html", classes=classes)
+
+@app.template_filter("convert_time")
+def convert_time(value: str):
+    t = datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+    t += timedelta(hours=3)
+    return t.strftime("%-d.%-m.%Y %H:%M")
 
 def check_csrf():
     token = request.form.get("csrf_token")

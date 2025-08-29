@@ -30,7 +30,7 @@
         </p>
 
         <p>
-            <small>{{ review.review_time }}</small>
+            <small>{{ review.review_time | convert_time}}</small>
         </p>
 
         Classes:
@@ -44,10 +44,10 @@
         <ul>
         {% for comment in comments %}
             <li>
-            <strong>{{ comment.username }}</strong>:<br>
+            <strong><a href="/user/{{ comment.id }}"> {{ comment.username }}</a></strong>:<br>
             {{ comment.comment | replace('\n','<br>') |safe }}
             <br>
-            <small>{{ comment.comment_time }}</small>
+            <small>{{ comment.comment_time | convert_time}}</small>
             </li>
         {% endfor %}
         </ul>
