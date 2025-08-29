@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+    <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    <body>
+        <h1>Book review app</h1>
+
+    {% if session.user_id %}
+    <p>
+        Hello <a href="/user/{{ session.user_id }}">{{ session.username }}</a>!
+    </p>
+    {% endif %}
+
+    <a href="/">Front page</a>|
+    <a href="/find_review">Search</a>|
+    {% if session.user_id %}
+        <a href="/new_review">Add review</a>|
+        <form action="/logout" method="post" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <button type="submit">Sign out</button>
+        </form>
+    {% else %}
+        <a href="/login">Sign in</a>|
+        <a href="/register">Register</a>
+    {% endif %}
+
+
+    {% block content %} {% endblock %}
+    </body>
+</html>

@@ -1,20 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search for a book review</title>
-</head>
-<body>
-    <h1>Search for a book review</h1>
+{% extends "layout.html" %}
+
+{% block title %}Search for reviews – Book review app{% endblock %}
+
+{% block content %}
+    <h2>Search for a book review:</h2>
     <form action="/find_review" method="get">
         <p>
-            search <input type="text" name="query" value="{{ query }}">
+            Search: <input type="text" name="query" value="{{ query }}">
         </p>
-        <input type="submit" value="search">
+        <input type="submit" value="Find">
     </form>
-
-    <p>
-        <a href="/">Front page</a>
-    </p>
     
     {% if query %}
     <h2>Results:</h2>
@@ -24,5 +19,4 @@
         {% endfor %}
     </ul>
     {% endif %}
-</body>
-</html>
+{% endblock %}

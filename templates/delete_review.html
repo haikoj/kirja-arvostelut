@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Delete the review</title>
-    </head>
-    <body>
-        <h1>Delete the review</h1>
-        <p>Are you sure you wish to delete your review permanently?</p>
-        <form action="/delete_review/{{ review.id }}" method="post">
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-            <input type="submit" name="delete" value="delete">
-            <input type="submit" name="go back" value="return">
-        </form>
-    </body>
-</html>
+{% extends "layout.html" %}
+
+{% block title %}Delete review – Book review app{% endblock %}
+
+{% block content %}
+    <h2>Delete the review</h2>
+    <p>Are you sure you wish to delete your review permanently?</p>
+    <form action="/delete_review/{{ review.id }}" method="post">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+        <input type="submit" name="delete" value="delete">
+        <input type="submit" name="go back" value="return">
+    </form>
+{% endblock %}

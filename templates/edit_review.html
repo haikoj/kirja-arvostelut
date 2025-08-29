@@ -1,53 +1,49 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Edit the review</title>
-    </head>
-    <body>
-        <h1>Edit the review</h1>
-        <form action="/update_review" method="post">
-            <input type="hidden" name="review_id" value="{{ review.id }}" />
+{% extends "layout.html" %}
 
-            <a href="/">Front page</a>
-            
-            {% for class in all_classes %}
-            <p>
-                {{ class|capitalize }}: <br />
-                <select name="classes">
-                <option value="(select)">(select)</option>
-                {% for option in all_classes[class] %}
-                    {% if classes[class] == option %}
-                    <option value="{{ class }}:{{ option }}" selected>
-                        {{ option }}
-                    </option>
-                    {% else %}
-                    <option value="{{ class }}:{{ option }}">
-                        {{ option }}
-                    </option>
-                    {% endif %}
-                {% endfor %}
-                </select>
-            </p>
+{% block title %}Edit review – Book review app{% endblock %}
+
+{% block content %}
+    <h2>Edit the review</h2>
+    <form action="/update_review" method="post">
+        <input type="hidden" name="review_id" value="{{ review.id }}" />
+
+        {% for class in all_classes %}
+        <p>
+            {{ class|capitalize }}: <br />
+            <select name="classes">
+            <option value="(select)">(select)</option>
+            {% for option in all_classes[class] %}
+                {% if classes[class] == option %}
+                <option value="{{ class }}:{{ option }}" selected>
+                    {{ option }}
+                </option>
+                {% else %}
+                <option value="{{ class }}:{{ option }}">
+                    {{ option }}
+                </option>
+                {% endif %}
             {% endfor %}
-            <p>
-                Book title: <br />
-                <input type="text" name="title" maxlength="100" size="86" value="{{ review.title }}" />
-            </p>
-            <p>
-                Author of the book: <br />
-                <input type="text" name="author" maxlength="50" size="86" value="{{ review.author }}"/>
-            </p>
-            <p>
-                Review: <br />
-                <textarea name="review" rows="22" cols="97">{{ review.review }}</textarea>
-            </p>
-            <p>
-                Grade 0-10: <br />
-                <input type="number" name="grade" min="0" max="10" value="{{ review.grade }}"/>
-            </p>
-            <input type="hidden" name="review_id" value="{{ review.id }}">
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-            <input type="submit" value="Confirm" />
-        </form>
-    </body>
-</html>
+            </select>
+        </p>
+        {% endfor %}
+        <p>
+            Book title: <br />
+            <input type="text" name="title" maxlength="100" size="86" value="{{ review.title }}" />
+        </p>
+        <p>
+            Author of the book: <br />
+            <input type="text" name="author" maxlength="50" size="86" value="{{ review.author }}"/>
+        </p>
+        <p>
+            Review: <br />
+            <textarea name="review" rows="22" cols="97">{{ review.review }}</textarea>
+        </p>
+        <p>
+            Grade 0-10: <br />
+            <input type="number" name="grade" min="0" max="10" value="{{ review.grade }}"/>
+        </p>
+        <input type="hidden" name="review_id" value="{{ review.id }}">
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+        <input type="submit" value="Confirm" />
+    </form>
+{% endblock %}

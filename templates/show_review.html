@@ -1,72 +1,66 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 
-<html>
-    <head>
-        <title>{{ review.title }} by {{ review.author }}</title>
-    </head>
+{% block title %}{{ review.title }} by {{ review.author }} – Book review app{% endblock %}
 
-    <body>
-        <h1>{{ review.title }} by {{ review.author }}</h1>
+{% block content %}
+    <h2>{{ review.title }} by {{ review.author }}</h2>
 
-        <a href="/">Front page</a>
+    {% if session.user_id == review.user_id %}
+    <p>
+        <a href="/edit_review/{{ review.id }}">Edit</a>
+        <a href="/delete_review/{{ review.id }}">Delete</a>
+    </p>
+    {% endif %}
 
-        {% if session.user_id == review.user_id %}
-        <p>
-            <a href="/edit_review/{{ review.id }}">Edit</a>
-            <a href="/delete_review/{{ review.id }}">Delete</a>
-        </p>
+    <p>
+    Grade: {{ review.grade }}
+    <br><br>
+    {{ review.review | replace('\n','<br>') | safe }}
+    </p>
+
+    <p>
+    Review by<br>
+    <a href="/user/{{ review.user_id }}">{{ review.username }}</a>
+    <br>
+    </p>
+
+    <p>
+        <strong><small>{{ review.review_time | convert_time}}</small></strong>
+        {% if review.edit_time %}
+            <br />
+            <small>(Last edit at {{ review.edit_time | convert_time }})</small>
         {% endif %}
+    </p>
 
-        <p>
-        Grade: {{ review.grade }}
-        <br><br>
-        {{ review.review | replace('\n','<br>') | safe }}
-        </p>
-
-        <p>
-        Review by<br>
-        <a href="/user/{{ review.user_id }}">{{ review.username }}</a>
-        <br>
-        </p>
-
-        <p>
-            <strong><small>{{ review.review_time | convert_time}}</small></strong>
-            {% if review.edit_time %}
-                <br />
-                <small>(Last edit at {{ review.edit_time | convert_time }})</small>
-            {% endif %}
-        </p>
-
-        Classes:
-        <ul>
-            {% for class in classes %}
-            <li>{{ class.title|capitalize }}: {{ class.value }}</li>
-            {% endfor %}
-        </ul>
-
-        <h2>Comments:</h2>
-        <ul>
-        {% for comment in comments %}
-          <li>
-            <strong><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a></strong><br>
-            {{ comment.comment | replace('\n','<br>') | safe }}<br>
-            <small>{{ comment.comment_time | convert_time }}</small>
-            {% if session.user_id == comment.user_id %}
-            <form action="/delete_comment/{{ comment.comment_id }}" method="post" style="display:inline;">
-                <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-                <button type="submit" class="delete-btn">Delete</button>
-            </form>
-            {% endif %}
-          </li>
+    Classes:
+    <ul>
+        {% for class in classes %}
+        <li>{{ class.title|capitalize }}: {{ class.value }}</li>
         {% endfor %}
-        </ul>
+    </ul>
 
-        <form action="/create_comment" method="post">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-        <input type="hidden" name="review_id" value="{{ review.id }}">
-        <textarea name="comment" rows="6" cols="40"></textarea>
-        <br>
-        <input type="submit" value="Post">
+    <h2>Comments:</h2>
+    <ul>
+    {% for comment in comments %}
+        <li>
+        <strong><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a></strong><br>
+        {{ comment.comment | replace('\n','<br>') | safe }}<br>
+        <small>{{ comment.comment_time | convert_time }}</small>
+        {% if session.user_id == comment.user_id %}
+        <form action="/delete_comment/{{ comment.comment_id }}" method="post" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+            <button type="submit" class="delete-btn">Delete</button>
         </form>
-    </body>
-</html>
+        {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+
+    <form action="/create_comment" method="post">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+    <input type="hidden" name="review_id" value="{{ review.id }}">
+    <textarea name="comment" rows="6" cols="40"></textarea>
+    <br>
+    <input type="submit" value="Post">
+    </form>
+{% endblock %}

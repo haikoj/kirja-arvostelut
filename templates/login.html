@@ -1,25 +1,13 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 
+{% block title %}Sign in – Book review app{% endblock %}
 
-<html>
-  <head>
-    <title>login</title>
-  </head>
+{% block content %}
 
-  <body>
   {% if session.username %}
     <p>You are already logged in as {{ session.username }}.</p>
-
-    <a href="/">Front page</a>
-
-    <br /><br />
-
-    <form action="/logout" method="post" style="display:inline">
-      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-      <input type="submit" value="Sign out" />
-    </form>
-
   {% else %}
+    <h2>Sign in:</h2>
     <form action="/login" method="post">
       <p>
         Username: <br />
@@ -33,5 +21,4 @@
       <input type="submit" value="Sign in" />
     </form>
   {% endif %}
-  </body>
-</html>
+{% endblock %}

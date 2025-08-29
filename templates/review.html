@@ -1,48 +1,42 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 
-<html>
-    <head>
-        <title>Review a book</title>
-    </head>
+{% block title %}Review – Book review app{% endblock %}
 
-    <body>
-        <h1>Add review</h1>
-        <form action="/create_review" method="post">
+{% block content %}
+    <h2>Review a book:</h2>
+    <form action="/create_review" method="post">
 
-            <a href="/">Front page</a>
-
-            {% for class in classes %}
-            <p>
-                {{ class|capitalize }}: <br />
-                <select name="classes">
-                <option value="(select)">(select)</option>
-                {% for option in classes[class] %}
-                <option value="{{ class }}:{{ option }}">
-                    {{ option }}
-                </option>
-                {% endfor %}
-                </select>
-            </p>
+        {% for class in classes %}
+        <p>
+            {{ class|capitalize }}: <br />
+            <select name="classes">
+            <option value="(select)">(select)</option>
+            {% for option in classes[class] %}
+            <option value="{{ class }}:{{ option }}">
+                {{ option }}
+            </option>
             {% endfor %}
+            </select>
+        </p>
+        {% endfor %}
 
-            <p>
-                Book title: <br />
-                <input type="text" name="title" maxlength="100" size="86"/>
-            </p>
-            <p>
-                Author of the book: <br />
-                <input type="text" name="author" maxlength="50" size="86" />
-            </p>
-            <p>
-                Review: <br />
-                <textarea name="review" rows="22" cols="97" ></textarea>
-            </p>
-            <p>
-                Grade 0-10: <br />
-                <input type="number" name="grade" min="0" max="10" required />
-            </p>
-            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
-            <input type="submit" value="Publish" />
-        </form>
-    </body>
-</html>
+        <p>
+            Book title: <br />
+            <input type="text" name="title" maxlength="100" size="86"/>
+        </p>
+        <p>
+            Author of the book: <br />
+            <input type="text" name="author" maxlength="50" size="86" />
+        </p>
+        <p>
+            Review: <br />
+            <textarea name="review" rows="22" cols="97" ></textarea>
+        </p>
+        <p>
+            Grade 0-10: <br />
+            <input type="number" name="grade" min="0" max="10" required />
+        </p>
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+        <input type="submit" value="Publish" />
+    </form>
+{% endblock %}

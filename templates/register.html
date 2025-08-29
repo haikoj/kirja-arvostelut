@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Registeration</title>
-</head>
+{% block title %}Register – Book review app{% endblock %}
 
-<body>
+{% block content %}
+  <h2>Registration</h2>
+
   <form action="/create" method="post">
     <p>
       Username: <br />
@@ -22,6 +21,4 @@
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Create account" />
   </form>
-</body>
-
-</html>
+{% endblock %}

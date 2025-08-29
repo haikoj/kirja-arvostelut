@@ -1,27 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-  <head>
-    <title>Book review app</title>
-  </head>
-  <body>
-    <h1>Book review app</h1>
+{% block title %}Book review app{% endblock %}
 
-    {% if session.username %}
-      <p>Hello <a href="/user/{{ session.user_id }}">{{ session.username }}</a>!</p>
-      <form action="/logout" method="post" style="display:inline">
-        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
-        <input type="submit" value="Sign out">
-      </form>
-    {% else %}
-      <a href="/login">Sign in</a>
-      <a href="/register">Register</a>
-    {% endif %}
-
-    <p>
-      <a href="/new_review">Add review</a>
-      <a href="/find_review">Search</a>
-    </p>
+{% block content %}
 
     <h2>Reviews:</h2>
     <ul>
@@ -29,5 +10,4 @@
         <li><a href="/review/{{ review.id }}">{{ review.title }}</a></li>
       {% endfor %}
     </ul>
-  </body>
-</html>
+{% endblock %}
