@@ -23,10 +23,11 @@ def get_reviews():
     return db.query(sql)
 
 def get_comments(review_id):
-    sql = """SELECT comments.comment, comments.comment_time, users.id, users.username
-            FROM comments, users
-            WHERE comments.review_id = ? AND comments.user_id = users.id
-            ORDER BY comments.id"""
+    sql = """SELECT c.comment, c.comment_time, c.id comment_id, c.user_id user_id, c.review_id review_id, u.username
+            FROM comments c
+            JOIN users u ON c.user_id = u.id
+            WHERE c.review_id = ?
+            ORDER BY c.id"""
 
     return db.query(sql, [review_id])
 
@@ -46,6 +47,15 @@ def get_all_classes():
         classes[title].append(value)
 
     return classes
+
+def get_comment(comment_id):
+    sql = """SELECT id, review_id, user_id, comment, comment_time
+            FROM comments
+            WHERE id = ?"""
+    result = db.query(sql, [comment_id])
+    if result:
+        return result[0]
+    else: return None
 
 def get_review(review_id):
     sql = """SELECT reviews.id, reviews.title, reviews.author, reviews.review, reviews.grade,
@@ -87,6 +97,9 @@ def delete_review(review_id):
     sql = """DELETE FROM reviews WHERE id = ?"""
     db.execute(sql, [review_id])
 
+def delete_comment(comment_id):
+    sql = """DELETE FROM comments WHERE id = ?"""
+    db.execute(sql, [comment_id])
 
 def find_review(query):
     sql_base = "SELECT id, title FROM reviews WHERE"

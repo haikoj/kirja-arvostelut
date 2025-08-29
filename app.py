@@ -221,6 +221,22 @@ def delete_review(review_id):
             return redirect("/")
         else: return redirect("/review/" + str(review_id))
 
+@app.route("/delete_comment/<int:comment_id>", methods=["POST"])
+def delete_comment_route(comment_id):
+    require_login()
+    check_csrf()
+
+    comment = reviews.get_comment(comment_id)
+    if not comment:
+        abort(404)
+
+    if comment["user_id"] != session["user_id"]:
+        abort(403)
+
+    review_id = comment["review_id"]
+    reviews.delete_comment(comment_id)
+    return redirect(f"/review/{review_id}")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
