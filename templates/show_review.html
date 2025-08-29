@@ -30,7 +30,11 @@
         </p>
 
         <p>
-            <small>{{ review.review_time | convert_time}}</small>
+            <strong><small>{{ review.review_time | convert_time}}</small></strong>
+            {% if review.edit_time %}
+                <br />
+                <small>(Last edit at {{ review.edit_time | convert_time }})</small>
+            {% endif %}
         </p>
 
         Classes:

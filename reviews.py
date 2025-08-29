@@ -48,7 +48,8 @@ def get_all_classes():
     return classes
 
 def get_review(review_id):
-    sql = """SELECT reviews.id, reviews.title, reviews.author, reviews.review, reviews.grade, reviews.review_time,
+    sql = """SELECT reviews.id, reviews.title, reviews.author, reviews.review, reviews.grade,
+            reviews.review_time, reviews.edit_time,
             users.username, users.id user_id
             FROM reviews, users
             WHERE reviews.user_id = users.id AND 
@@ -70,7 +71,8 @@ def update_review(review_id, book_title, author, review, grade, classes):
     for title, value in classes:
         db.execute(sql, [review_id, title, value])
 
-    sql = """UPDATE reviews SET title = ?, author = ?, review = ?, grade = ?
+    sql = """UPDATE reviews
+            SET title = ?, author = ?, review = ?, grade = ?, edit_time = CURRENT_TIMESTAMP
             WHERE id = ?"""
     db.execute(sql, [book_title, author, review, grade, review_id])
 
