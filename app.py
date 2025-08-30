@@ -22,14 +22,15 @@ def index():
 
 @app.route("/find_review")
 def find_review():
-    user_query = request.args.get("query", "")
-    query = user_query.strip()
+    title = (request.args.get("title") or "").strip()
+    author = (request.args.get("author") or "").strip()
 
-    if not query:
-        results = []
+    if title or author:
+        results = reviews.find_review_fields(title, author)
     else:
-        results = reviews.find_review(query)
-    return render_template("find_review.html", query=user_query, results=results)
+        results = []
+
+    return render_template("find_review.html", title=title, author=author, results=results)
 
 @app.route("/review/<int:review_id>")
 def show_review(review_id):

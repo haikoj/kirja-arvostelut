@@ -118,3 +118,26 @@ def find_review(query):
 
     sql = f"{sql_base} {' OR '.join(possible)} ORDER BY id DESC"
     return db.query(sql, separate_words)
+
+def find_review_fields(title, author):
+    conditions = []
+    values = []
+
+    if title:
+        conditions.append("r.title LIKE ? COLLATE NOCASE")
+        values.append(f"%{title}%")
+
+    if author:
+        conditions.append("r.author LIKE ? COLLATE NOCASE")
+        values.append(f"%{author}%")
+
+    if not conditions:
+        return []
+
+    sql = """SELECT r.id, r.title, r.author, u.username
+            FROM reviews r
+            JOIN users u ON r.user_id = u.id
+            WHERE """ + " AND ".join(conditions) + """
+            ORDER BY r.id DESC"""
+
+    return db.query(sql, values)

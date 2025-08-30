@@ -1,22 +1,37 @@
 {% extends "layout.html" %}
 
-{% block title %}Search for reviews – Book review app{% endblock %}
+{% block title %}Search – Book review app{% endblock %}
 
 {% block content %}
     <h2>Search for a book review:</h2>
+
     <form action="/find_review" method="get">
         <p>
-            Search: <input type="text" name="query" value="{{ query }}">
+        <label>Book title:<br>
+            <input type="text" name="title" value="{{ title|default('') }}" size="43">
+        </label>
         </p>
-        <input type="submit" value="Find">
+        <p>
+        <label>Author:<br>
+            <input type="text" name="author" value="{{ author|default('') }}" size="43">
+        </label>
+        </p>
+        <button type="submit">Search</button>
     </form>
-    
-    {% if query %}
-    <h2>Results:</h2>
-    <ul>
-        {% for result in results %}
-        <li><a href="/review/{{ result.id }}">{{ result.title }}</a></li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+
+    {% if title or author %}
+        <h3>Results</h3>
+        {% if results %}
+            <ul>
+                {% for result in results %}
+                <li>
+                    <a href="/review/{{ result.id }}">{{ result.title }}</a>
+                    by {{ result.author }} — <strong>{{ result.username }}</strong>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No matches.</p>
+        {% endif %}
+  {% endif %}
 {% endblock %}
