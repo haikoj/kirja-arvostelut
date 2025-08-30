@@ -1,6 +1,6 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
-    username TEXT UNIQUE,
+    username TEXT UNIQUE COLLATE NOCASE,
     password_hash TEXT
 );
 

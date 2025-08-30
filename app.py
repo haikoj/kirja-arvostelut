@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session, abort
+from flask import redirect, render_template, request, session, abort, flash
 from datetime import datetime, timedelta
 import db
 import config
@@ -54,13 +54,22 @@ def register():
 @app.route("/create", methods=["POST"])
 def create():
     check_csrf()
-    username = request.form["username"]
+    username = request.form["username"].strip()
     password1 = request.form["password1"]
     password2 = request.form["password2"]
+    error = False
+    if len(username) < 2 or len(username) > 20:
+        flash("Username must be 2-20 characters")
+        error = True
     if password1 != password2:
-        return "Passwords do not match."
-    if len(password1) < 4:
-        return "Password must be at least 4 digits"
+        flash("Passwords do not match.")
+        error = True
+    if len(password1) < 4 or len(password2) < 4:
+        flash("Password must be at least 4 digits")
+        error = True
+    
+    if error:
+        return redirect("/register")
 
     try:
         users.create_user(username, password1)
@@ -69,7 +78,8 @@ def create():
         session["username"] = username
         session["csrf_token"] = secrets.token_hex(16)
     except sqlite3.IntegrityError:
-        return "Username is already taken!"
+        flash("Username is already taken!")
+        return redirect("/register")
 
     return redirect("/")
 
