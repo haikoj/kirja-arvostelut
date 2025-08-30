@@ -11,7 +11,8 @@ CREATE TABLE reviews (
     review TEXT,
     grade INTEGER,
     user_id INTEGER REFERENCES users,
-    review_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    review_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    edit_time TIMESTAMP
 );
 
 CREATE TABLE comments (
