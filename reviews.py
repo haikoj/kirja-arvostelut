@@ -18,9 +18,11 @@ def add_comment(review_id, user_id, comment):
     db.execute(sql, [review_id, user_id, comment])
 
 def get_reviews():
-    sql = """SELECT r.id, r.title, r.author, u.username
+    sql = """SELECT r.id, r.title, r.author, r.user_id, u.username, COUNT(c.id) comment_count
             FROM reviews r
             JOIN users u ON r.user_id = u.id
+            LEFT JOIN comments c ON c.review_id = r.id
+            GROUP BY r.id
             ORDER BY r.id DESC"""
     
     return db.query(sql)

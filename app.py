@@ -146,7 +146,7 @@ def create_comment():
     require_login()
     check_csrf()
 
-    comment = request.form.get("comment")
+    comment = request.form.get("comment").strip()
     review_id = request.form.get("review_id")
     if not review_id or not comment:
         flash("Post content required")

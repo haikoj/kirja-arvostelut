@@ -1,0 +1,37 @@
+body {
+    margin: auto;
+    max-width: 50em;
+    font-family: sans-serif;
+    background-color: rgb(202, 134, 255);
+}
+
+.reviews {
+    list-style: none;
+    padding: 0.2em;
+}
+
+.review {
+    background-color: rgb(247, 220, 131);
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin: 10px;
+    box-shadow: 4px 8px 12px rgb(53, 53, 53);
+    transition: background-color 0.25s;
+}
+
+.review:hover {
+    background-color: rgb(252, 243, 214);
+}
+
+.review_line {
+    margin: 2px 0;
+}
+
+.review_link {
+    display: inline-block;
+    transition: opacity 0.07s;
+}
+
+.review_line .review_link:hover {
+    opacity: 0.65;
+}

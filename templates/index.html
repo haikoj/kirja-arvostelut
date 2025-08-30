@@ -5,10 +5,22 @@
 {% block content %}
 
     <h2>Latest reviews:</h2>
-    <ul>
+    <ul class="reviews">
       {% for review in reviews %}
-        <li><a href="/review/{{ review.id }}">{{ review.title }} by {{ review.author }} –
-        <strong>{{ review.username }}</strong></a></li>
+        <li class="review">
+          <div class="review_line">
+            <a class="review_link" href="/review/{{ review.id }}">{{ review.title }} by {{ review.author }}</a>
+          </div>
+
+          <div class="review_line">
+            <span>Reviewer: </span>
+            <a class="review_link" href="/user/{{ review.user_id }}">{{ review.username }}</a>
+          </div>
+
+          <div class="review_line">
+            <span>Comments: {{ review.comment_count }}</span>
+          </div>
+        </li>
       {% endfor %}
     </ul>
 {% endblock %}
