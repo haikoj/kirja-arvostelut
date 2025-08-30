@@ -114,8 +114,8 @@ def find_review(query):
 
     for word in words:
         like = f"%{word}%"
-        possible.append("title LIKE ?")
-        possible.append("author LIKE ?")
+        possible.append("title LIKE ? COLLATE NOCASE")
+        possible.append("author LIKE ? COLLATE NOCASE")
         separate_words.extend([like, like])
 
     sql = f"{sql_base} {' OR '.join(possible)} ORDER BY id DESC"
@@ -136,10 +136,12 @@ def find_review_fields(title, author):
     if not conditions:
         return []
 
-    sql = """SELECT r.id, r.title, r.author, u.username
+    sql = """SELECT r.id, r.title, r.author, u.username, COUNT(c.id) comment_count
             FROM reviews r
             JOIN users u ON r.user_id = u.id
+            LEFT JOIN comments c ON c.review_id = r.id
             WHERE """ + " AND ".join(conditions) + """
-            ORDER BY r.id DESC"""
+            GROUP BY r.id
+            ORDER BY comment_count DESC, r.id DESC"""
 
     return db.query(sql, values)
