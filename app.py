@@ -81,6 +81,7 @@ def create():
         flash("Username is already taken!")
         return redirect("/register")
 
+    flash("Registration successful!", "success")
     return redirect("/")
 
 @app.route("/user/<int:user_id>")
@@ -118,19 +119,24 @@ def create_review():
             classes.append((entry_title, entry_value))
 
     if not (title and author and review_text and grade):
-        return "All fields must be filled"
+        flash("All fields must be filled")
+        return redirect("/new_review")
 
     try:
         grade = int(grade)
     except ValueError:
-        return "The grade must be an integer between 0 and 10."
+        flash("The grade must be an integer between 0 and 10.")
+        return redirect("/new_review")
 
     if len(title) > 100:
-        return f"Book title is {len(title)-100} characters too long."
+        flash(f"Book title is {len(title)-100} characters too long.")
+        return redirect("/new_review")
     if len(author) > 50:
-        return f"Author name is {len(author)-50} characters too long."
+        flash(f"Author name is {len(author)-50} characters too long.")
+        return redirect("/new_review")
     if not (0 <= grade <= 10):
-        return "The grade must be between 0 and 10."
+        flash("The grade must be between 0 and 10.")
+        return redirect("/new_review")
 
     reviews.add_review(title, author, review_text, grade, session["user_id"], classes)
     return redirect("/")
@@ -143,7 +149,8 @@ def create_comment():
     comment = request.form.get("comment")
     review_id = request.form.get("review_id")
     if not review_id or not comment:
-        return "Post content required"
+        flash("Post content required")
+        return redirect(f"/review/{review_id}") if review_id else redirect("/")
 
     if not reviews.get_review(review_id):
         abort(404)
@@ -190,17 +197,22 @@ def update_review():
     try:
         grade = int(grade)
     except:
-        return "The grade must be an integer between 0 and 10"
+        flash("The grade must be an integer between 0 and 10")
+        return redirect(f"/edit_review/{review_id}")
 
     if author and review_text and title and (grade or grade == 0):
         if len(title) > 100:
-            return f"Book title is {len(title)-100} characters too long."
+            flash(f"Book title is {len(title)-100} characters too long.")
+            return redirect(f"/edit_review/{review_id}")
         if len(author) > 50:
-            return f"Author name is {len(author)-50} characters too long."
+            flash(f"Author name is {len(author)-50} characters too long.")
+            return redirect(f"/edit_review/{review_id}")
         if not 10 >= int(grade) >= 0:
-            return "The grade must be between 0 and 10"
+            flash("The grade must be between 0 and 10")
+            return redirect(f"/edit_review/{review_id}")
     else:
-        return "All fields must be filled"
+        flash("All fields must be filled")
+        return redirect(f"/edit_review/{review_id}")
 
     all_classes = reviews.get_all_classes()
 
@@ -259,7 +271,8 @@ def login():
     username = request.form["username"]
     password = request.form["password"]
     if not username or not password:
-        return "Please fill in both username and password"
+        flash("Please fill in both username and password")
+        return redirect("/login")
 
     user_id = users.check_login(username, password)
     if user_id:
@@ -267,7 +280,8 @@ def login():
         session["username"] = username
         session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
-    return "Invalid username or password"
+    flash("Invalid username or password")
+    return redirect("/login")
 
 
 @app.route("/logout", methods=["POST"])

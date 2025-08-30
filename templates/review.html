@@ -7,30 +7,30 @@
     <form action="/create_review" method="post">
 
         {% for class in classes %}
-        <p>
-            {{ class|capitalize }}: <br />
-            <select name="classes">
-            <option value="(select)">(select)</option>
-            {% for option in classes[class] %}
-            <option value="{{ class }}:{{ option }}">
-                {{ option }}
-            </option>
-            {% endfor %}
-            </select>
-        </p>
+            <p>
+                {{ class|capitalize }}: <br />
+                <select name="classes" required>
+                    <option value="" disabled selected>(select)</option>
+                    {% for option in classes[class] %}
+                    <option value="{{ class }}:{{ option }}">
+                        {{ option }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </p>
         {% endfor %}
 
         <p>
             Book title: <br />
-            <input type="text" name="title" maxlength="100" size="86"/>
+            <input type="text" name="title" maxlength="100" size="86" required />
         </p>
         <p>
             Author of the book: <br />
-            <input type="text" name="author" maxlength="50" size="86" />
+            <input type="text" name="author" maxlength="50" size="86" required />
         </p>
         <p>
             Review: <br />
-            <textarea name="review" rows="22" cols="97" ></textarea>
+            <textarea name="review" rows="22" cols="97" required ></textarea>
         </p>
         <p>
             Grade 0-10: <br />

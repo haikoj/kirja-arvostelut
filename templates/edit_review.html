@@ -10,8 +10,8 @@
         {% for class in all_classes %}
         <p>
             {{ class|capitalize }}: <br />
-            <select name="classes">
-            <option value="(select)">(select)</option>
+            <select name="classes" required>
+            <option value="" disabled selected>(select)</option>
             {% for option in all_classes[class] %}
                 {% if classes[class] == option %}
                 <option value="{{ class }}:{{ option }}" selected>
@@ -28,19 +28,19 @@
         {% endfor %}
         <p>
             Book title: <br />
-            <input type="text" name="title" maxlength="100" size="86" value="{{ review.title }}" />
+            <input type="text" name="title" maxlength="100" size="86" value="{{ review.title }}" required/>
         </p>
         <p>
             Author of the book: <br />
-            <input type="text" name="author" maxlength="50" size="86" value="{{ review.author }}"/>
+            <input type="text" name="author" maxlength="50" size="86" value="{{ review.author }}" required/>
         </p>
         <p>
             Review: <br />
-            <textarea name="review" rows="22" cols="97">{{ review.review }}</textarea>
+            <textarea name="review" rows="22" cols="97" required>{{ review.review }}</textarea>
         </p>
         <p>
             Grade 0-10: <br />
-            <input type="number" name="grade" min="0" max="10" value="{{ review.grade }}"/>
+            <input type="number" name="grade" min="0" max="10" value="{{ review.grade }}" required/>
         </p>
         <input type="hidden" name="review_id" value="{{ review.id }}">
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
