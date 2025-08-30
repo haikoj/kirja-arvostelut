@@ -139,7 +139,9 @@ def create_review():
         return redirect("/new_review")
 
     reviews.add_review(title, author, review_text, grade, session["user_id"], classes)
-    return redirect("/")
+
+    review_id = reviews.add_review(title, author, review_text, grade, session["user_id"], classes)
+    return redirect("/review/" + str(review_id))
 
 @app.route("/create_comment", methods=["POST"])
 def create_comment():

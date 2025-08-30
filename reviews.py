@@ -12,6 +12,8 @@ def add_review(title, author, review, grade, user_id, classes):
     for title2, value2 in classes:
         db.execute(sql, [review_id, title2, value2])
 
+    return review_id
+
 def add_comment(review_id, user_id, comment):
     sql = """INSERT INTO comments (review_id, user_id, comment)
             VALUES (?, ?, ?)"""
