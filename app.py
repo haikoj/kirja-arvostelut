@@ -62,7 +62,7 @@ def create():
         flash("Username must be 2-20 characters")
         error = True
     if password1 != password2:
-        flash("Passwords do not match.")
+        flash("Passwords do not match")
         error = True
     if len(password1) < 4 or len(password2) < 4:
         flash("Password must be at least 4 digits")

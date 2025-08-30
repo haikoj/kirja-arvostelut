@@ -1,37 +1,196 @@
-body {
+body.site_body {
     margin: auto;
-    max-width: 50em;
+    max-width: 60em;
     font-family: sans-serif;
-    background-color: rgb(202, 134, 255);
+    background-color: rgb(217, 167, 255);
+    line-height: 1.7;
+    padding: 1em;
+    color: rgb(0, 0, 0);
+}
+
+.site_title {
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    color: white;
+    text-shadow: 3px 3px 5px rgb(42, 42, 42);
+}
+
+.greeting {
+    text-align: center;
+    margin-bottom: 2em;
+    font-size: 1em;
+    color: black;
+    font-weight: bold;
+    transition: opacity 0.25s;
+    transition: font-size 1s;
+}
+.greeting_user {
+    font-weight: bold;
+    color: rgb(3, 15, 131);
+    text-decoration: none;
+    font-size: 1em;
+}
+.greeting_user:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+.greeting:hover {
+    font-size: 1.25em;
+}
+
+.navigation_align {
+    text-align: center;
+    margin-bottom: 1.5em;
+}
+
+.navigation,
+.logout_button {
+    display: inline-block;
+    margin: 0 0.5em;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    background-color: rgb(75, 75, 75);
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.25s;
+    border: none;
+    transition: transform 0.1s;
+    transition: box-shadow 0.1s;
+    box-shadow: 4px 6px 6px rgba(53, 53, 53, 0.6);
+}
+.navigation:hover {
+    background-color: rgb(166, 166, 166);
+}
+.logout_button:hover {
+    background-color: rgb(202, 0, 0);
+    cursor: pointer;
+}
+.navigation:active {
+    transform: translate(1px, 1.5px);
+    box-shadow: 1px 2px 3px rgba(33, 33, 33, 0.6);
+}
+.logout_button:active {
+    transform: translate(1px, 1.5px);
+    box-shadow: 1px 2px 3px rgba(33, 33, 33, 0.6);
+}
+.logout_corner {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    margin: 0;
+}
+
+.flashes {
+    margin: 1em auto;
+    max-width: 40em;
+}
+.flash {
+    margin: 0.5em 0;
+    padding: 10px 12px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(207, 0, 0);
+    list-style: none;
+}
+.flash.success {
+    color: rgb(0, 179, 0)
 }
 
 .reviews {
     list-style: none;
-    padding: 0.2em;
+    padding: 0;
 }
-
 .review {
-    background-color: rgb(247, 220, 131);
+    background-color: rgb(249, 233, 181);
     border-radius: 4px;
     padding: 10px 12px;
     margin: 10px;
-    box-shadow: 4px 8px 12px rgb(53, 53, 53);
+    box-shadow: 4px 8px 12px rgba(53, 53, 53, 0.6);
     transition: background-color 0.25s;
 }
-
 .review:hover {
-    background-color: rgb(252, 243, 214);
+    background-color: rgb(252, 250, 240);
 }
-
 .review_line {
-    margin: 2px 0;
+    margin: 4px 0;
 }
-
 .review_link {
     display: inline-block;
-    transition: opacity 0.07s;
+    font-weight: 500;
+    color: rgb(12, 9, 189);
+    text-decoration: none;
+    transition: opacity 0.25s;
+}
+.review_link:hover {
+    opacity: 0.7;
 }
 
-.review_line .review_link:hover {
-    opacity: 0.65;
+.comments {
+    list-style: none;
+    padding: 0;
+}
+.comment {
+    background-color: white;
+    padding: 3px;
+    margin: 8px;
+    border-radius: 4px;
+}
+.comment_user {
+    color: black;
+    text-decoration: none;
+    margin-left: 12px;
+}
+.comment_user:hover {
+    text-decoration: underline;
+}
+.comment_body {
+    margin-left: 12px;
+}
+.comment_time {
+    font-size: 0.8em;
+    color: rgb(152, 152, 152);
+    margin-left: 12px;
+}
+.delete-button {
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(203, 0, 0);
+    color: black;
+    padding: 2px 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.85em;
+    margin-top: 4px;
+    transition: background-color 0.25s;
+    transition: transform 0.1s;
+}
+.delete-button:hover {
+    background-color: rgb(138, 3, 3);
+}
+.delete-button:active {
+    transform: translate(0.5px, 1px);
+}
+
+.comment_textarea {
+    width: 400px;
+    max-width: 880px;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+    padding: 10px;
+    margin: 8px;
+}
+.comment_submit {
+    margin-top: 6px;
+    background-color: rgb(75, 75, 75);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.comment_submit:hover {
+    background-color: rgb(166, 166, 166);
 }
