@@ -7,21 +7,20 @@
 
     <form action="/find_review" method="get">
         <p>
-        <label>Book title:<br>
-            <input type="text" name="title" value="{{ title|default('') }}" size="43">
-        </label>
+            <label for="title">Book title:</label><br>
+            <input type="text" id="title" name="title" value="{{ title|default('') }}" size="43">
         </p>
         <p>
-        <label>Author:<br>
-            <input type="text" name="author" value="{{ author|default('') }}" size="43">
-        </label>
+            <label for="author">Author:</label><br>
+            <input type="text" id="author" name="author" value="{{ author|default('') }}" size="43">
         </p>
         <button type="submit">Search</button>
     </form>
 
     {% if title or author %}
-        <h3>Results:</h3>(Sorted by Relevance)
+        <h3>Results:</h3>
         {% if results %}
+            (Sorted by Relevance)
             <ul>
                 {% for result in results %}
                 <li>

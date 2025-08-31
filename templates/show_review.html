@@ -73,7 +73,8 @@
     <form action="/create_comment" method="post">
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       <input type="hidden" name="review_id" value="{{ review.id }}">
-      <textarea class="comment_textarea" name="comment" rows="6" cols="40"></textarea>
+      <label for="comment">Comment:</label><br>
+      <textarea id="comment" class="comment_textarea" name="comment" rows="6" cols="40" required></textarea>
       <br>
       <input class="button comment_submit" type="submit" value="Post">
     </form>

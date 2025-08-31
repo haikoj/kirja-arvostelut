@@ -7,16 +7,16 @@
 
   <form action="/create" method="post">
     <p>
-      Username: <br />
-      <input type="text" name="username" required/>
+      <label for="username">Username:</label><br>
+      <input type="text" id="username" name="username" required />
     </p>
     <p>
-      Password: <br />
-      <input type="password" name="password1" required/>
+      <label for="password1">Password:</label><br>
+      <input type="password" id="password1" name="password1" required />
     </p>
     <p>
-      Confirm password: <br />
-      <input type="password" name="password2" required/>
+      <label for="password2">Confirm password:</label><br>
+      <input type="password" id="password2" name="password2" required />
     </p>
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Create account" />
