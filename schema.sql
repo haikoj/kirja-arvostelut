@@ -35,3 +35,7 @@ CREATE TABLE review_classes (
     title TEXT,
     value TEXT
 );
+
+CREATE INDEX idx_reviews_user_id ON reviews (user_id);
+CREATE INDEX idx_comments_review_id ON comments (review_id);
+CREATE INDEX idx_review_classes_review_id ON review_classes (review_id);
