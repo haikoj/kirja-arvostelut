@@ -1,5 +1,6 @@
 import sqlite3
 import secrets
+import math
 
 from datetime import datetime, timedelta
 from flask import Flask
@@ -13,11 +14,20 @@ app = Flask(__name__)
 app.secret_key = config.secret_key
 
 @app.route("/")
-def index():
-    all_reviews = reviews.get_reviews()
-    if "username" in session and "csrf_token" not in session:
-        session["csrf_token"] = secrets.token_hex(16)
-    return render_template("index.html", reviews = all_reviews)
+@app.route("/<int:page>")
+def index(page=1):
+    page_size = 10
+    review_count = reviews.review_count()
+    page_count = math.ceil(review_count / page_size)
+    page_count = max(page_count, 1)
+    if page < 1:
+        return redirect("/1")
+    if page > page_count:
+        return redirect("/" + str(page_count))
+
+    all_reviews = reviews.get_reviews(page, page_size)
+    return render_template("index.html",
+        page=page, page_count=page_count, reviews=all_reviews)
 
 @app.route("/find_review")
 def find_review():
@@ -29,7 +39,8 @@ def find_review():
     else:
         results = []
 
-    return render_template("find_review.html", title=title, author=author, results=results)
+    return render_template("find_review.html",
+        title=title, author=author, results=results)
 
 @app.route("/review/<int:review_id>")
 def show_review(review_id):

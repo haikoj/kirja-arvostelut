@@ -19,15 +19,23 @@ def add_comment(review_id, user_id, comment):
             VALUES (?, ?, ?)"""
     db.execute(sql, [review_id, user_id, comment])
 
-def get_reviews():
-    sql = """SELECT r.id, r.title, r.author, r.user_id, u.username, COUNT(c.id) comment_count
+def get_reviews(page, page_size):
+    sql = """SELECT r.id, r.title, r.author, r.user_id,
+            u.username, COUNT(c.id) comment_count
             FROM reviews r
             JOIN users u ON r.user_id = u.id
             LEFT JOIN comments c ON c.review_id = r.id
             GROUP BY r.id
-            ORDER BY r.id DESC"""
+            ORDER BY r.id DESC
+            LIMIT ? OFFSET ?"""
+    offset = page_size * (page - 1)
 
-    return db.query(sql)
+    return db.query(sql, [page_size, offset])
+
+def review_count():
+    sql = "SELECT COUNT(*) FROM reviews"
+
+    return db.query(sql)[0][0]
 
 def get_comments(review_id):
     sql = """SELECT c.comment, c.comment_time, c.id comment_id,

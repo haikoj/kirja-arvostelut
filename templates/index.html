@@ -23,4 +23,13 @@
         </li>
       {% endfor %}
     </ul>
+        <nav class="pagination">
+          {% if page > 1 %}
+            <a class="navigation" href="/{{ page - 1 }}">Previous</a>
+          {% endif %}
+          <span>Page {{ page }} / {{ page_count }}</span>
+          {% if page < page_count %}
+            <a class="navigation" href="/{{ page + 1 }}">Next</a>
+          {% endif %}
+        </nav>
 {% endblock %}
