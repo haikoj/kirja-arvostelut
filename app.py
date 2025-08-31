@@ -1,17 +1,16 @@
 import sqlite3
+import secrets
+
+from datetime import datetime, timedelta
 from flask import Flask
 from flask import redirect, render_template, request, session, abort, flash
-from datetime import datetime, timedelta
-import db
+
 import config
 import reviews
 import users
-import secrets
-
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
-
 
 @app.route("/")
 def index():
@@ -67,7 +66,7 @@ def create():
     if len(password1) < 4 or len(password2) < 4:
         flash("Password must be at least 4 digits")
         error = True
-    
+
     if error:
         return redirect("/register")
 
@@ -134,7 +133,7 @@ def create_review():
     if len(author) > 50:
         flash(f"Author name is {len(author)-50} characters too long.")
         return redirect("/new_review")
-    if not (0 <= grade <= 10):
+    if not 0 <= grade <= 10:
         flash("The grade must be between 0 and 10.")
         return redirect("/new_review")
 
@@ -176,7 +175,8 @@ def edit_review(review_id):
         classes[entry["title"]] = entry["value"]
 
     reviews.get_classes(review_id)
-    return render_template("edit_review.html", review=review, all_classes=all_classes, classes=classes)
+    return render_template("edit_review.html",
+        review=review, all_classes=all_classes, classes=classes)
 
 
 @app.route("/update_review", methods=["POST"])
@@ -243,7 +243,7 @@ def delete_review(review_id):
         if "delete" in request.form:
             reviews.delete_review(review_id)
             return redirect("/")
-        else: return redirect("/review/" + str(review_id))
+        return redirect("/review/" + str(review_id))
 
 @app.route("/delete_comment/<int:comment_id>", methods=["POST"])
 def delete_comment_route(comment_id):
@@ -294,12 +294,6 @@ def logout():
 
 @app.route("/new_review")
 def review():
-    require_login()
-    classes = reviews.get_all_classes()
-    return render_template("review.html", classes=classes)
-
-@app.route("/new_comment")
-def comment():
     require_login()
     classes = reviews.get_all_classes()
     return render_template("review.html", classes=classes)

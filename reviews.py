@@ -26,11 +26,13 @@ def get_reviews():
             LEFT JOIN comments c ON c.review_id = r.id
             GROUP BY r.id
             ORDER BY r.id DESC"""
-    
+
     return db.query(sql)
 
 def get_comments(review_id):
-    sql = """SELECT c.comment, c.comment_time, c.id comment_id, c.user_id user_id, c.review_id review_id, u.username
+    sql = """SELECT c.comment, c.comment_time, c.id comment_id,
+            c.user_id user_id, c.review_id review_id,
+            u.username
             FROM comments c
             JOIN users u ON c.user_id = u.id
             WHERE c.review_id = ?
@@ -62,20 +64,20 @@ def get_comment(comment_id):
     result = db.query(sql, [comment_id])
     if result:
         return result[0]
-    else: return None
+    return None
 
 def get_review(review_id):
     sql = """SELECT reviews.id, reviews.title, reviews.author, reviews.review, reviews.grade,
             reviews.review_time, reviews.edit_time,
             users.username, users.id user_id
             FROM reviews, users
-            WHERE reviews.user_id = users.id AND 
+            WHERE reviews.user_id = users.id AND
             reviews.id = ?"""
-    
+
     result = db.query(sql, [review_id])
     if result:
         return result[0]
-    else: return None
+    return None
 
 
 def update_review(review_id, book_title, author, review, grade, classes):

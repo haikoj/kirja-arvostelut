@@ -1,19 +1,19 @@
-import db
 from werkzeug.security import check_password_hash, generate_password_hash
+import db
 
 def get_user(user_id):
     sql = """SELECT id, username
             FROM users
             WHERE id = ?"""
-    
+
     result = db.query(sql, [user_id])
-    
+
     if result:
         return result[0]
-    else: return None
+    return None
 
 def get_user_reviews(user_id):
-    sql = """SELECT id, title, author 
+    sql = """SELECT id, title, author
             FROM reviews
             WHERE user_id = ?
             ORDER BY id DESC"""
@@ -35,4 +35,4 @@ def check_login(username, password):
     password_hash = result[0]["password_hash"]
     if check_password_hash(password_hash, password):
         return user_id
-    else: return None
+    return None
