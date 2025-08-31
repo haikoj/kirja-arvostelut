@@ -2,9 +2,11 @@ import sqlite3
 import secrets
 import math
 
+from time import perf_counter
 from datetime import datetime, timedelta
 from flask import Flask
 from flask import redirect, render_template, request, session, abort, flash
+from flask import g
 
 import config
 import reviews
@@ -324,3 +326,13 @@ def check_csrf():
 def require_login():
     if "user_id" not in session:
         abort(403)
+
+@app.before_request
+def before_request():
+    g.start_time = perf_counter()
+
+@app.after_request
+def after_request(response):
+    elapsed_time = round(perf_counter() - g.start_time, 2)
+    print("elapsed time:", elapsed_time, "s")
+    return response
