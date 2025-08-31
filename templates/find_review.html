@@ -14,18 +14,21 @@
             <label for="author">Author:</label><br>
             <input type="text" id="author" name="author" value="{{ author|default('') }}" size="43">
         </p>
-        <button type="submit">Search</button>
+        <button type="submit">Find</button>
     </form>
 
     {% if title or author %}
         <h3>Results:</h3>
         {% if results %}
-            (Sorted by Relevance)
-            <ul>
+            <p>(Sorted by Relevance)</p>
+            <ul class="reviews">
                 {% for result in results %}
-                <li>
-                    <a href="/review/{{ result.id }}">{{ result.title }}</a>
-                    by {{ result.author }} — <strong>{{ result.username }}</strong>
+                <li class="review">
+                    <div class="review_line">
+                        <a class="review_link" href="/review/{{ result.id }}">{{ result.title }}</a>
+                        by <span class="review_author">{{ result.author }}</span><br>
+                        Reviewer: <a class="greeting_user" href="/user/{{ result.user_id }}">{{ result.username }}</a>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>

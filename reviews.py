@@ -138,7 +138,7 @@ def find_review_fields(title, author):
     if not conditions:
         return []
 
-    sql = """SELECT r.id, r.title, r.author, u.username, COUNT(c.id) comment_count
+    sql = """SELECT r.id, r.title, r.author, u.username, u.id user_id, COUNT(c.id) comment_count
             FROM reviews r
             JOIN users u ON r.user_id = u.id
             LEFT JOIN comments c ON c.review_id = r.id
