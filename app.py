@@ -138,8 +138,6 @@ def create_review():
         flash("The grade must be between 0 and 10.")
         return redirect("/new_review")
 
-    reviews.add_review(title, author, review_text, grade, session["user_id"], classes)
-
     review_id = reviews.add_review(title, author, review_text, grade, session["user_id"], classes)
     return redirect("/review/" + str(review_id))
 
