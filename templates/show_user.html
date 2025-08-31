@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 
-{% block title %}User {{user.username}} – Book review app{% endblock %}
+{% block title %}User {{ user.username }} – Book review app{% endblock %}
 
 {% block content %}
-    <h2>{{ user.username }}</h2>
+    <h2>User {{ user.username }}</h2>
 
-    <p>
+    <p class="review_line">
         {% if not own_page %}
             {% if reviews|count == 0 %}
                 {{ user.username }} has no book reviews yet.
@@ -23,25 +23,26 @@
             {% else %}
                 You have reviewed {{ reviews|count }} books.
             {% endif %}
-            <br /><br />
-            <a href="/new_review">Add review</a>
         {% endif %}
-
     </p>
+
     {% if reviews|count != 0 %}
-        <h2>Reviews:</h2>
-        <ul>
+        <h3>Reviews:</h3>
+        <ul class="reviews">
         {% for review in reviews %}
-            <li>
-            <a href="/review/{{ review.id }}">{{ review.title }} by {{ review.author }}</a>
-            {% if own_page %}
-                <form action="/edit_review/{{ review.id }}" method="get" style="display:inline;">
-                <button type="submit">Edit</button>
-                </form>
-                <form action="/delete_review/{{ review.id }}" method="get" style="display:inline;">
-                <button type="submit">Delete</button>
-                </form>
-            {% endif %}
+            <li class="review">
+                <div class="review_line">
+                    <a class="review_link" href="/review/{{ review.id }}">
+                        {{ review.title }} by {{ review.author }}
+                    </a>
+                </div>
+
+                {% if own_page %}
+                    <div class="review_line">
+                        <a class="navigation" href="/edit_review/{{ review.id }}">Edit</a>
+                        <a class="logout_button" href="/delete_review/{{ review.id }}">Delete</a>
+                    </div>
+                {% endif %}
             </li>
         {% endfor %}
         </ul>
