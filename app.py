@@ -242,8 +242,8 @@ def delete_review(review_id):
         check_csrf()
         if "delete" in request.form:
             reviews.delete_review(review_id)
-            return redirect("/")
-        return redirect("/review/" + str(review_id))
+            return redirect(f"/user/{session['user_id']}")
+        return redirect(f"/user/{session['user_id']}")
 
 @app.route("/delete_comment/<int:comment_id>", methods=["POST"])
 def delete_comment_route(comment_id):
